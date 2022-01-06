@@ -1,0 +1,33 @@
+.example-side-bar {
+    height: 100%;
+    width: 10%;
+    background: red;
+    border-radius: 1rem 0px 0px 1rem;
+    box-shadow: 0px 0px 40px rgb(255, 59, 59);
+    transition: 1.2s;
+}
+
+.top-side-bar {
+    display: flex;
+    padding: 4px;
+    margin: 4px;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.top-side-bar h3 {
+    color: white;
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+.top-side-bar img {
+    width: 96px;
+    height: 96px;
+}
+
+.expand-side-bar {
+    background: blue;
+    box-shadow: 0px 0px 40px rgb(59, 59, 255);
+    width: 25%;
+}
