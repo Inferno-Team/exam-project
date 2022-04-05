@@ -16,8 +16,7 @@ class CreateSupervisorsTable extends Migration
         Schema::create('supervisors', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->enum('type', ['رئيس القاعة', 'مرقب', 'مراقب احتياط']);
-            
+            $table->enum('type', ['رئيس القاعة', 'مرقب', 'مراقب احتياط','أمين سر']);
             $table->timestamps();
         });
     }

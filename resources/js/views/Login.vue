@@ -1,7 +1,5 @@
 <template>
   <section>
-    <router-view></router-view>
-
     <div class="imgBx">
       <img src="/imgs/img.jpg" />
     </div>
@@ -27,15 +25,8 @@
             <div class="inputBx">
               <span>كلمة السر</span>
               <input type="password" name="" v-model="fields.password" />
-              <div v-if="errors && errors.password" class="text-danger">
-                {{ errors.password[0] }}
-              </div>
             </div>
             <div class="remember">
-              <label
-                ><input type="checkbox" style="margin: 5px 10px" name="" />تذكر
-                كلمة السر</label
-              >
               <div class="inputBx">
                 <input type="submit" value="تسجيل الدخول" name="" />
               </div>
@@ -50,21 +41,15 @@
 export default {
   mounted() {
     const token = localStorage.getItem("user-token");
-<<<<<<< HEAD
-    if (token !== undefined && token !== null)
-     this.$router.push({ name: "home" });
-=======
-    console.log(token);
+
     if (token !== undefined && token !== null)
       this.$router.push({ name: "home" });
->>>>>>> 546133a8d71b9ff7bd210332bf69c283403773a7
+    console.log(token);
   },
   data() {
     return {
       fields: {},
       errors: {},
-      success: false,
-      loaded: true,
     };
   },
   methods: {
@@ -73,8 +58,7 @@ export default {
         .post("/api/submit", this.fields)
         .then((response) => {
           this.fields = {}; //Clear input fields.
-          this.loaded = true;
-          this.success = true;
+
           const token = response.data.token;
           console.log(response.data);
           localStorage.setItem("user-token", token);
@@ -84,7 +68,6 @@ export default {
         .catch((error) => {
           console.log(error.response);
           if (error.response.status === 422) {
-            this.loaded = true;
             this.errors = error.response.data.errors || {};
           }
         });
@@ -155,7 +138,7 @@ section .welcomeBx {
 }
 
 section .sectionBx .welcomeBx h4 {
-  border-bottom: 4px solid #ff4584;
+  border-bottom: 4px solid#ff4584;
   margin-bottom: 20px;
   font-weight: 600;
   display: inline-block;
@@ -167,7 +150,6 @@ section .sectionBx .welcomeBx h3 {
   font-weight: 600;
   margin-right: 0.8rem;
   font-size: 1.2em;
-  box-shadow: 5px 0px #ccc;
 }
 
 section .contentBx .formBx {

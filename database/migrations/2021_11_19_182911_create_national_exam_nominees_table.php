@@ -16,7 +16,7 @@ class CreateNationalExamNomineesTable extends Migration
         Schema::create('national_exam_nominees', function (Blueprint $table) {
             $table->id();
             $table->foreignId('student_id')->references('id')->on('students');
-            $table->enum('status', ['مؤهل', 'راسب', 'ناجح']);
+            $table->enum('type', ['عام تخرج', 'ماستر برمجيات', 'ماستر ذكاء', 'ماستر شبكات']);
             $table->integer('mark');
             $table->timestamps();
         });

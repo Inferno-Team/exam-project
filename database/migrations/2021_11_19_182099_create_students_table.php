@@ -23,8 +23,11 @@ class CreateStudentsTable extends Migration
             $table->string('birth_place');
             $table->enum('gender', ['ذكر', 'انثى']);
             $table->integer('field_number');
-            $table->string('recruitment_division');
+            $table->string('recruitment_division')->nullable();
+            $table->string('city');
             $table->string('address');
+            $table->string('nationalty');
+        
             $table->timestamps();
         });
     }

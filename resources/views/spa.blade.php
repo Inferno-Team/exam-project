@@ -10,10 +10,10 @@
 </head>
 
 <body>
-    <div id="app" style="direction: rtl;">
+    <div id="application" style="direction: rtl;">
         <app></app>
     </div>
-    <script src="{{ mix('js/app.js') }}"></script>
+    <script src="{{ mix('js/app.js') }}">  </script>
 </body>
 
 </html>

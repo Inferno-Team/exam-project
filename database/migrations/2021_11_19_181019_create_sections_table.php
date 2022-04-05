@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreateSectionsTable extends Migration
@@ -18,6 +19,18 @@ class CreateSectionsTable extends Migration
             $table->string('name')->unique();
             $table->timestamps();
         });
+        DB::table('sections')->insert([
+            'name' => 'علوم أساسية'
+        ]);
+        DB::table('sections')->insert([
+            'name' => 'برمجيات'
+        ]);
+        DB::table('sections')->insert([
+            'name' => 'شبكات'
+        ]);
+        DB::table('sections')->insert([
+            'name' => 'ذكاء صنعي'
+        ]);
     }
 
     /**

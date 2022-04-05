@@ -1,16 +1,15 @@
 import Login from "./views/Login";
 import Home from "./views/Home";
 import Dashboard from "./views/Dashboard";
-import AddStudent from "./views/student/AddStudent";
-import RemoveStudent from './views/student/RemoveStudent';
-import UpdateStudent from './views/student/UpdateStudent';
 import ShowAllStudent from './views/student/ShowAllStudent';
-import AddDoctor from './views/doctor/AddDoctor';
-import RemoveDoctor from './views/doctor/RemoveDoctor';
-import UpdateDoctor from './views/doctor/UpdateDoctor';
+import ShowAllDoctor from './views/doctor/ShowAllDoctor'
 import Mark1 from './views/add_marks/Mark1';
 import Mark2 from './views/add_marks/Mark2';
 import AddCourse from './views/courses/AddCourse';
+import GenerateReport from './views/reports/GenerateReport';
+import SetDate from './views/dates/SetDates';
+import MarksReport from './views/reports/templates/MarksReport';
+
 export const routes = [
     {
         path: '/login',
@@ -30,21 +29,6 @@ export const routes = [
 
             // dashboard - student
             {
-                name: 'add-student',
-                path: '/dashboard/add.student',
-                component: AddStudent
-            },
-            {
-                name: 'remove-student',
-                path: '/dashboard/remove.student',
-                component: RemoveStudent
-            },
-            {
-                name: 'update-student',
-                path: '/dashboard/update.student',
-                component: UpdateStudent
-            },
-            {
                 name: 'show-all-student',
                 path: '/dashboard/show-all.student',
                 component: ShowAllStudent
@@ -53,18 +37,8 @@ export const routes = [
             // dashboard - doctors
             {
                 name: 'add-doctor',
-                path: "/dashboard/add.doctor",
-                component: AddDoctor
-            },
-            {
-                name: 'remove-doctor',
-                path: '/dashboard/remove.doctor',
-                component: RemoveDoctor
-            },
-            {
-                name: 'update-doctor',
-                path: '/dashboard/update.doctor',
-                component: UpdateDoctor
+                path: "/dashboard/show-all.doctor",
+                component: ShowAllDoctor
             },
             {
                 name: 'add-mark1',
@@ -81,11 +55,24 @@ export const routes = [
                 path: '/dashboard/add.course',
                 component: AddCourse
             },
+            {
+                name: 'reports',
+                path: '/dashboard/reports',
+                component: GenerateReport,
+            },
+            {
+                name: 'marks_report',
+                path: '/dashboard/generate/:univID',
+                component: MarksReport,
+                props:true
+            },
+            {
+                name: 'set_dates',
+                path: '/dashboard/dates',
+                component: SetDate
+            },
 
+        ],
 
-
-        ]
     },
-
-
 ]

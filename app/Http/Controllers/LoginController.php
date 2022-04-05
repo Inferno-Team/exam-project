@@ -20,11 +20,13 @@ class LoginController extends Controller
                 'errors' => ['name' => ['لم يتم العثور على المستخدم']]
             ], 422);
         }
+
         if (!Hash::check($request->password, $user->password)) {
             return response()->json([
                 'errors' => ['match' => ['اسم المستخدم و كلمة السر لا توافق بياناتنا']]
             ], 422);
         }
+        
         $token = $user->createToken($user->name . '#exam')->plainTextToken;
         return response()->json([
             'user' => $user,

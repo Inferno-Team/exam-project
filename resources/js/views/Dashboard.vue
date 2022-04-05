@@ -18,51 +18,14 @@ export default {
           icon: "fa fa-bars",
         },
         {
-          title: "طالب",
-          icon: "fa fa-user",
-          child: [
-            {
-              title: "عرض كافة الطالب",
-              icon: "fa fa-university",
-              href: "/dashboard/show-all.student",
-            },
-            {
-              title: "إضافة طالب",
-              icon: "fa fa-plus",
-              href: "/dashboard/add.student",
-            },
-            {
-              title: "حذف طالب",
-              icon: "fa fa-minus",
-              href: "/dashboard/remove.student",
-            },
-            {
-              title: "تعديل طالب",
-              icon: "fa fa-pencil-square-o",
-              href: "/dashboard/update.student",
-            },
-          ],
+          title: "عرض كافة الطلاب",
+          icon: "fa fa-university",
+          href: "/dashboard/show-all.student",
         },
         {
           title: "دكتور",
           icon: "fa fa-user",
-          child: [
-            {
-              title: "إضافة دكتور",
-              icon: "fa fa-plus",
-              href: "/dashboard/add.doctor",
-            },
-            {
-              title: "حذف دكتور",
-              icon: "fa fa-minus",
-              href: "/dashboard/remove.doctor",
-            },
-            {
-              title: "تعديل دكتور",
-              icon: "fa fa-pencil-square-o",
-              href: "/dashboard/update.doctor",
-            },
-          ],
+          href: "/dashboard/show-all.doctor",
         },
         {
           title: "إضافة علامات الطلاب",
@@ -84,6 +47,16 @@ export default {
           title: "إضافة مادة",
           icon: "fa fa-pencil-square-o",
           href: "/dashboard/add.course",
+        },
+        {
+          title: "توليد تقرير",
+          icon: "fa fa-pencil-square-o",
+          href: "/dashboard/reports",
+        },
+        {
+          title: "تحديد تواريخ",
+          icon: "fa fa-clock-o",
+          href: "/dashboard/dates",
         },
       ],
     };

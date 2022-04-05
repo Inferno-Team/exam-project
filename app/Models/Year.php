@@ -20,4 +20,5 @@ class Year extends Model
     {
         return $this->hasMany(StudentYear::class, 'year_id');
     }
+    
 }

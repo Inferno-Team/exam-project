@@ -53,9 +53,7 @@ export default {
             location.reload();
           }
         })
-        .catch((error) => {
-          console.log(error);
-        });
+        .catch((error) => console.log(error));
       localStorage.removeItem("user-token");
     },
     login() {

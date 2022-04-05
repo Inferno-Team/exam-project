@@ -7,10 +7,18 @@ use Illuminate\Http\Request;
 
 class YearController extends Controller
 {
-    public function get_years(){
+    public function get_years()
+    {
         $years = Year::get();
         return response()->json([
-            'years'=>$years
-        ],200);
+            'years' => $years
+        ], 200);
+    }
+    public function getYear($id)
+    {
+        $year = Year::where('id', $id)->first();
+        return response()->json([
+            'year' => $year
+        ], 200);
     }
 }
