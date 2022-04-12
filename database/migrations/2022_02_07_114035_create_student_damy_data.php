@@ -20,7 +20,7 @@ class CreateStudentDamyData extends Migration
         $places = ['حمدانية', 'حلب جديدة', 'اعظمية', 'فرقان', 'اكرمية', 'محافظة', 'موغامبو', 'جميلية', 'سيف الدولة', 'صلاح الدين', 'حي البيل'];
 
         $is_male = false;
-        for ($i = 0; $i < 6000; $i++) {
+        for ($i = 0; $i < 1000; $i++) {
             $student_name = '';
             $father_index = rand(0, 10);
             $last_name_index = rand(0, 10);

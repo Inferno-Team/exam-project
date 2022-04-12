@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\DateController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\student\StudentController;
@@ -43,9 +45,12 @@ Route::group(["middleware" => ["auth:sanctum"]], function ($route) {
     $route->get('/get_student_year_marks/{id}/{year_id}', [StudentController::class, 'getYearMarks']);
     $route->get('/get_student_year_history/{id}/{year_id}', [StudentController::class, 'getYearHistory']);
     $route->post('/get_years', [YearController::class, 'get_years']);
+    $route->post('/get_semesters', [YearController::class, 'get_semesters']);
     $route->get('/get_year/{id}', [YearController::class, 'getYear']);
     $route->post('/get_courses', [CourseController::class, 'getCourses']);
     $route->post('/add_course', [CourseController::class, 'addCourse']);
     $route->get('/get_sections', [SectionController::class, 'getSections']);
     $route->post('/add_supervisor', [SupervisorController::class, 'addSuper']);
+    $route->get('/dates', [DateController::class, 'getDates']);
+    $route->post('/set_dates', [DateController::class, 'setDates']);
 });

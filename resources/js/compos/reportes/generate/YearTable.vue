@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="year-container">
+      
       <h6 style="display: inline" class="name">{{ year.name }}</h6>
       <p style="display: inline">للعام الدراسي</p>
       <p style="display: inline" class="name">{{ yearHistory.year_date }}</p>
@@ -18,7 +19,7 @@
             <th scope="row">العلامة رقماً</th>
             <th scope="row">العلامة كتابتاً</th>
           </tr>
-          <tr v-for="(mark, i) in marks" :key="i">
+          <tr v-for="(mark, i) in firstSemesterMarks" :key="i">
             <th scope="row">{{ mark.course.name }}</th>
             <th scope="row">{{ mark.fullMark }}</th>
             <th scope="row">{{ mark.fullMarkName }}</th>
@@ -30,7 +31,7 @@
             <th scope="row">العلامة رقماً</th>
             <th scope="row">العلامة كتابتاً</th>
           </tr>
-          <tr v-for="(mark, i) in marks" :key="i">
+          <tr v-for="(mark, i) in secondSemesterMarks" :key="i">
             <th scope="row">{{ mark.course.name }}</th>
             <th scope="row">{{ mark.fullMark }}</th>
             <th scope="row">{{ mark.fullMarkName }}</th>
@@ -76,9 +77,13 @@ export default {
 
           for (let index = 0; index < this.marks.length; index++) {
             let mark = this.marks[index];
+
             if (mark.marks.length == 2) {
               mark.fullMark = mark.marks[0].mark + mark.marks[1].mark;
               mark.fullMarkName = toArabicWord(mark.fullMark);
+              if (mark.course.year_semester.semester_id == 1)
+                this.firstSemesterMarks.push(mark);
+              else this.secondSemesterMarks.push(mark);
             } else {
               let index = this.marks.indexOf(mark);
               removed.push(index);
@@ -114,6 +119,10 @@ export default {
       year: {},
       yearHistory: {},
       marks: [],
+
+      firstSemesterMarks: [],
+      secondSemesterMarks: [],
+
       avrage: 0.0,
       avrageWriting: "",
       status: "",

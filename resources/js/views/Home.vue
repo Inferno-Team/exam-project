@@ -1,5 +1,5 @@
 <template>
-<div class="my-container">
+  <div class="my-container">
     <NavBar />
     <div class="first-section">
       <img src="/imgs/home_img.jpg" />
@@ -12,7 +12,7 @@ export default {
   mounted() {
     this.getUser();
   },
-  
+
   data() {
     return {
       user: {},
@@ -43,5 +43,4 @@ export default {
   height: 100%;
   opacity: 0.75;
 }
-
 </style>

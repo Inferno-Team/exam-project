@@ -14,7 +14,7 @@ class Course extends Model
         'name',
         'type',
         'section_id',
-        'year_id',
+        'sy_id',
         'created_at',
         'updated_at',
     ];
@@ -22,8 +22,8 @@ class Course extends Model
     {
         return $this->belongsTo(Section::class, 'section_id');
     }
-    public function year()
+    public function year_semester()
     {
-        return $this->belongsTo(Year::class, 'year_id');
+        return $this->belongsTo(YearSemester::class, 'sy_id');
     }
 }

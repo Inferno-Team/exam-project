@@ -92,9 +92,8 @@ class StudentController extends Controller
 
     public function getYearMarks($id, $year_id)
     {
-        $sc = StudentCourses::where('student_id', $id)->with('marks', 'course')->get();
-        $sc = $sc->where('course.year_id', $year_id);
-
+        $sc = StudentCourses::where('student_id', $id)->with('marks', 'course.year_semester')->get();
+        $sc = $sc->where('course.year_semester.year_id', $year_id);
         return response()->json(array_values($sc->toArray()), 200);
     }
     public function getYearHistory($id, $year_id)
