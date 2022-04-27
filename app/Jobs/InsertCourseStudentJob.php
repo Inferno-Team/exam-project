@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\Course;
 use App\Models\StudentCourses;
+use App\Models\StudentStatus;
 use App\Models\StudentYear;
 use App\Models\Year;
 use Illuminate\Bus\Queueable;
@@ -49,6 +50,7 @@ class InsertCourseStudentJob implements ShouldQueue
                     'student_id' => $s->student->id,
                     'course_id' => $this->course->id,
                     'status' => 'اول مرة',
+                    
                 ]);
                 $studentsCount++;
             }

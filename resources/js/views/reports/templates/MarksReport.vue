@@ -28,30 +28,50 @@
         <p class="name">{{ student.birth_place }}</p>
         <p>
           المتمتع بالجنسية العربية السورية خلال السنوات التي قضاها في كلية
-          الهندسةالمعلوماتية جامعة حلب التي نالها في كل مقرر من عام
+          الهندسة المعلوماتية جامعة حلب التي نالها في كل مقرر من عام
         </p>
         <p class="name">{{ firstYear }}</p>
         <!-- this would be the student first year we currentlly dont have it on our system -->
         <p>وحتى الدورة الفصلية</p>
+        <!-- this would be the current semester -->
         <p class="name">الأولى</p>
         <p>للعام الدراسي</p>
         <p class="name">{{ thisYear }}</p>
 
-        <!-- this would be the current semester -->
         <p>المعدل العام</p>
         <!-- this would be the avrage of student marks -->
         <p class="name">{{ fullMark }}</p>
         <p>التقدير العام</p>
         <p class="name">جيد جداً</p>
-        <p>وتخرج بموجب قرار مجلس جامعة حلب رقم /</p>
-        <p class="name">1891651</p>
-        <p>/ وتاريخ</p>
-        <p class="name">2020</p>
+        <div
+          style="display: inline"
+          v-if="this.object.graduationNumber !== null"
+        >
+          <p>وتخرج بموجب قرار مجلس جامعة حلب رقم /</p>
+          <p class="name">{{ object.graduationNumber }}</p>
+          <p>/ وتاريخ</p>
+          <p class="name">{{ object.graduationDate }}</p>
+        </div>
       </div>
       <div v-if="this.year !== null">
         <div v-for="i in this.year.id" :key="i">
           <YearTable :yid="i" :sid="student.id" @avr="avrage" />
         </div>
+      </div>
+      <div style="margin-right: 1rem">
+        <h6 class="under-line">
+          وثيقة تبرع بالدم رقم / {{ this.object.blood }} / تاريخ
+          {{ this.object.bloodDate }} صادرة عن بنك الدم بحلب.
+        </h6>
+        <h6 class="under-line">
+          سددت الرسوم بموجب إيصال رقم / {{ this.object.check }} / تاريخ
+          {{ this.object.checkDate }}
+        </h6>
+        <h6 v-if="this.object.graduationNumber !== null" class="under-line">
+          اُعطي هذا الكشف بموجب وثيقة التخرج رقم /
+          {{ this.object.graduationNumber }} / وبتاريخ
+          {{ this.object.graduationDate }}
+        </h6>
       </div>
     </div>
   </div>
@@ -62,7 +82,7 @@ import YearTable from "../../../compos/reportes/generate/YearTable.vue";
 import html2PDF from "jspdf-html2canvas";
 export default {
   components: { YearTable },
-  props: ["univID"],
+  props: ["object"],
   mounted() {
     this.getStudent();
   },
@@ -78,7 +98,7 @@ export default {
   methods: {
     getStudent() {
       axios
-        .get(`/api/get_student_by_id/${this.$props.univID}`)
+        .get(`/api/get_student_by_id/${this.$props.object.univID}`)
         .then((res) => {
           console.log(res.data);
           this.student = res.data;
@@ -149,5 +169,11 @@ p {
   font-size: 17px;
   display: inline;
   font-weight: 600;
+}
+.under-line {
+  margin-top: 0.5rem;
+  text-decoration-line: underline;
+  font-weight: 600;
+  text-underline-offset: 0.125rem;
 }
 </style>

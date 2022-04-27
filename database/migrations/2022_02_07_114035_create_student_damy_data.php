@@ -53,11 +53,6 @@ class CreateStudentDamyData extends Migration
                 'city' => "حلب",
                 'nationalty' => "عربي-سوري",
             ]);
-            $year_id = rand(1, 5);
-            DB::table('student_year')->insert([
-                'student_id' => $i + 1,
-                'year_id' => $year_id
-            ]);
             $is_male = !$is_male;
         }
     }

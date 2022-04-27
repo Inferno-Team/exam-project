@@ -102,6 +102,25 @@
           required
         ></b-form-input>
       </b-form-group>
+      <b-form-group
+        id="input-group-12"
+        v-if="
+          this.selected.year.name !== '' && this.selected.section.name !== ''
+        "
+        label="مع علامات مساعدة ؟"
+        label-for="input-12"
+        style="margin-bottom: 1rem"
+      >
+        <b-form-checkbox
+          id="input-12"
+          v-model="with_help"
+          style="width: 17%"
+          value="true"
+          unchecked-value="false"
+          required
+        ></b-form-checkbox>
+      </b-form-group>
+
       <b-button
         @click.prevent="addMark()"
         v-if="this.searchValue !== null && this.mark !== null"
@@ -136,6 +155,7 @@ export default {
         msg: "",
         code: -1,
       },
+      with_help:false,
       student: null,
       courses: [],
       years: [],
@@ -206,6 +226,7 @@ export default {
           student_id: this.student.id,
           mark: this.mark,
           course_id: this.selected_course.id,
+          with_help:this.with_help
         })
         .then((res) => {
           this.notify = {

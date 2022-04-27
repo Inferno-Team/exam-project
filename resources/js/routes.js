@@ -62,7 +62,7 @@ export const routes = [
             },
             {
                 name: 'marks_report',
-                path: '/dashboard/generate/:univID',
+                path: '/dashboard/generate/:object',
                 component: MarksReport,
                 props:true
             },

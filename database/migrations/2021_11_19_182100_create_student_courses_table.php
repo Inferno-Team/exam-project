@@ -17,6 +17,10 @@ class CreateStudentCoursesTable extends Migration
             $table->id();
             $table->foreignId('student_id')->references('id')->on('students');
             $table->foreignId('course_id')->references('id')->on('courses');
+            $table->enum('status', ['ناجح', 'راسب', 'اول مرة']);
+            $table->boolean("with_help")->default(false);
+            $table->integer('mark1')->nullable();
+            $table->integer('mark2')->nullable();
             $table->timestamps();
         });
     }

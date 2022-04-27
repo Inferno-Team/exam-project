@@ -7,6 +7,7 @@ use App\Models\Course;
 use App\Models\Student;
 use App\Models\StudentCourses;
 use App\Models\StudentMarks;
+use App\Models\StudentStatus;
 use App\Models\StudentYear;
 use App\Models\StudentYearsHistory;
 use App\Models\Year;
@@ -17,7 +18,7 @@ class StudentController extends Controller
     public function getAllStudent($year)
     {
         $students = Student::whereHas('year', fn ($query) => $query
-            ->where('year_id', $year)->with('year'))->with('year.year')->get();
+            ->where('year_id', $year))->with('year.year')->get();
         return response()->json(['students' => $students], 200);
     }
 
@@ -79,7 +80,7 @@ class StudentController extends Controller
     }
     public function getFirstYear($id)
     {
-        $sy = StudentYearsHistory::where('student_id', $id)->where('year_id', 1)->first();
+        $sy = StudentStatus::where('student_id', $id)->where('year_id', 1)->first();
         return response()->json([
             'year' => $sy->year_date
         ], 200);
@@ -92,13 +93,13 @@ class StudentController extends Controller
 
     public function getYearMarks($id, $year_id)
     {
-        $sc = StudentCourses::where('student_id', $id)->with('marks', 'course.year_semester')->get();
+        $sc = StudentCourses::where('student_id', $id)->with('course.year_semester')->get();
         $sc = $sc->where('course.year_semester.year_id', $year_id);
         return response()->json(array_values($sc->toArray()), 200);
     }
     public function getYearHistory($id, $year_id)
     {
-        $history = StudentYearsHistory::where('student_id', $id)
+        $history = StudentStatus::where('student_id', $id)
             ->where('year_id', $year_id)->first();
         return response()->json($history, 200);
     }
@@ -119,11 +120,8 @@ class StudentController extends Controller
                 'message' => 'هذا الطالب ناجح في هذه المادة من قبل'
             ], 200);
         } else {
-            $studentMark = StudentMarks::create([
-                'cs_id' => $courseStudent->id,
-                'mark' => $mark,
-                'type' => 'عملي'
-            ]);
+            $courseStudent->mark1 = $mark;
+            $courseStudent->save();
             return response()->json([
                 'code' => 200,
                 'message' => 'تم إضافة العلامة بنجاح'
@@ -144,25 +142,42 @@ class StudentController extends Controller
                 'message' => 'هذا الطالب ناجح في هذه المادة من قبل'
             ], 200);
         } else {
-            $courseStudentMark1 = StudentMarks::where('cs_id', $courseStudent->id)
-                ->where('type', 'عملي')->first();
-            $studentMark = StudentMarks::create([
-                'cs_id' => $courseStudent->id,
-                'mark' => $mark,
-                'type' => 'نظري'
-            ]);
-            $fullMark = $mark + $courseStudentMark1->mark;
-            if ($fullMark > 59) {
-                $courseStudent->status = 'ناجح';
-                $courseStudent->save();
+            $courseStudent->mark2 = $mark;
+            $fullMark = $mark + $courseStudent->mark1;
+            if ($fullMark >= 54 && $fullMark <= 59) {
+                if ($request->with_help) {
+                    $courseStudent->with_help = true;
+                    $courseStudent->status = 'ناجح';
+                } else {
+                    $courseStudent->status = 'راسب';
+                }
             } else {
-                $courseStudent->status = 'راسب';
-                $courseStudent->save();
+                if ($fullMark > 60)
+                    $courseStudent->status = 'ناجح';
+                else  $courseStudent->status = 'راسب';
             }
+            $courseStudent->save();
             return response()->json([
                 'code' => 200,
                 'message' => 'تم إضافة العلامة بنجاح'
             ], 200);
         }
+    }
+
+    public function getStudentYear($id)
+    {
+        $student = Student::where('univ_id', $id)->with('year')->first();
+        if (isset($student)) {
+            $years = Year::where('id', '>=', 4)->where('id', '<=', $student->year->year_id)
+                ->get();
+            return response()->json([
+                'code' => 200,
+                'msg' => 'السنوات',
+                'years' => $years
+            ], 200);
+        } else return response()->json([
+            'code' => 404,
+            'msg' => 'لم يتم العثور على هذا الطالب'
+        ], 404);
     }
 }

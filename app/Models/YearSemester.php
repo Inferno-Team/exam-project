@@ -9,13 +9,10 @@ class YearSemester extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'year_id', 'semester_id', 'name'
+        'year_id', 'semester_name'
     ];
-    public function year(){
-        return $this->belongsTo(Year::class,'year_id');
+    public function year()
+    {
+        return $this->belongsTo(Year::class, 'year_id');
     }
-    public function semester(){
-        return $this->belongsTo(Semester::class,'semester_id');
-    }
-    
 }

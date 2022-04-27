@@ -18,7 +18,13 @@ class CreateCoursesTable extends Migration
             $table->string('name');
             $table->enum('type', ['عادي', 'اختياري']);
             $table->foreignId('section_id')->references('id')->on('sections');
-            // $table->foreignId('year_id')->references('id')->on('years');
+            $table->enum('selection_type', [
+                'مجموعة 1',
+                'مجموعة 2',
+                'مجموعة 3',
+                'مجموعة 4',
+                'مجموعة 5',
+            ])->nullable();
             $table->foreignId('sy_id')->references('id')->on('year_semesters');
             $table->timestamps();
         });

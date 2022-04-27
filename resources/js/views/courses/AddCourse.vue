@@ -3,110 +3,72 @@
     class="card m-3"
     style="padding: 1rem; width: 75%; height: 50%; margin: auto !important"
   >
-    <b-form
-      @submit.prevent="addCourse"
-      style="padding-left: 3rem; padding-right: 3rem"
-    >
-      <b-form-group
-        id="input-group-1"
-        label-cols="4"
-        label-cols-lg="2"
-        label-size="lg"
-        label="اسم المادة"
-        label-for="input-1"
-        class="card center-text"
-        style="flex-direction: row"
-      >
+    <div class="grid_view">
+      <div>
+        <p>اسم المادة</p>
         <b-form-input
           id="input-1"
           v-model="course_name"
           type="text"
           style="width: fit-content"
           required
-        ></b-form-input>
-      </b-form-group>
+        />
+      </div>
 
-      <b-form-group
-        style="width: 50%"
-        id="input-group-2"
-        class="card center-text input-form"
-      >
-        <label
-          class="label"
-          style="height: 100%; margin: auto; margin-left: 4rem"
-          for="input-2"
-          >السنة</label
-        >
+      <div>
+        <p>السنة</p>
         <b-form-select
           id="input-2"
           v-model="selected_year"
           :options="this.years"
           style="width: 50%"
-          :change="selectedYearChanged"
+          @change="selectedYearChanged"
           required
-        ></b-form-select>
-      </b-form-group>
-
-      <b-form-group
-        style="width: 50%"
-        id="input-group-3"
-        class="card center-text input-form"
-      >
-        <label
-          class="label"
-          style="height: 100%; margin: auto; margin-left: 4rem"
-          for="input-3"
-          >الفصل</label
-        >
+        />
+      </div>
+      <div>
+        <p>الفصل</p>
         <b-form-select
-          id="input-2"
+          id="input-3"
           v-model="selected_semester"
           :options="this.semesters"
           style="width: 50%"
           required
-        ></b-form-select>
-      </b-form-group>
-
-      <b-form-group
-        style="width: 50%"
-        id="input-group-4"
-        class="card center-text input-form"
-      >
-        <label
-          class="label"
-          style="height: 100%; margin: auto; margin-left: 2.4rem"
-          for="input-4"
-          >نوع المادة</label
-        >
-        <b-form-select
-          id="input-4"
-          v-model="type"
-          :options="this.types"
-          style="width: 50%"
-          required
-        ></b-form-select>
-      </b-form-group>
-
-      <b-form-group
-        style="width: 50%"
-        id="input-group-5"
-        class="card center-text input-form"
-      >
-        <label
-          class="label"
-          style="height: 100%; margin: auto; margin-left: 3.9rem"
-          for="input-5"
-          >القسم</label
-        >
+        />
+      </div>
+      <div style="display: flex; justify-content: space-between">
+        <div style="width: 11rem">
+          <p>نوع المادة</p>
+          <b-form-select
+            id="input-4"
+            v-model="type"
+            @change="selectedType"
+            :options="this.types"
+            style="width: 50%"
+            required
+          />
+        </div>
+        <div v-if="selected_year.id >= 4" style="width: 11rem">
+          <p>مجموعة المادة</p>
+          <b-form-select
+            id="input-4"
+            v-model="selectionType"
+            :options="this.selectionTypes"
+            style="width: 50%"
+            required
+          />
+        </div>
+      </div>
+      <div>
+        <p>القسم</p>
         <b-form-select
           id="input-5"
           v-model="selected_section"
           :options="this.sections"
           style="width: 50%"
           required
-        ></b-form-select>
-      </b-form-group>
-
+        />
+      </div>
       <b-button
         @click.prevent="addCourse()"
         v-if="
@@ -117,7 +79,7 @@
       >
         إضافة مادة</b-button
       >
-    </b-form>
+    </div>
     <Notification :notification="notify" />
   </div>
 </template>
@@ -130,7 +92,6 @@ export default {
   mounted() {
     this.getYears();
     this.getSections();
-    this.getSemesters();
   },
 
   data() {
@@ -138,6 +99,7 @@ export default {
       years: [],
       semesters: [],
       sections: [],
+      selectionType: "",
       selected_year: {
         id: 0,
         name: "",
@@ -154,13 +116,25 @@ export default {
         msg: "",
         code: -1,
       },
-      types: ["عادي", "اختياري"],
+      types: [],
+      selectionTypes: [],
       type: "",
       course_name: "",
     };
   },
   methods: {
-    selectedYearChanged(year) {
+    selectedYearChanged() {
+      this.getSemesters(this.selected_year.id);
+      if (this.selected_year.id >= 4) {
+        this.types = ["عادي", "اختياري"];
+      } else this.types = ["عادي"];
+    },
+    selectedType() {
+      if (this.type === "اختياري") {
+        if (this.selected_year.id == 4)
+          this.selectionTypes = ["مجموعة 1", "مجموعة 2"];
+        else this.selectionTypes = ["مجموعة 3", "مجموعة 4", "مجموعة 5"];
+      } else this.selectionTypes = [];
     },
     addCourse() {
       var course = {
@@ -169,8 +143,9 @@ export default {
         section_id: this.selected_section.id,
         semester_id: this.selected_semester.id,
         type: this.type,
+        selection_type: this.selectionType,
       };
-      
+
       axios
         .post("/api/add_course", course)
         .then((response) => {
@@ -198,13 +173,16 @@ export default {
         })
         .catch((error) => console.log(error));
     },
-    getSemesters() {
+    getSemesters(id) {
       axios
-        .post("/api/get_semesters")
+        .post(`/api/get_semesters/${id}`)
         .then((response) => {
+          console.log(response.data.years);
           response.data.years.forEach((semester) => {
-            if (semester.name !== "تكميلي")
-              this.semesters.push({ value: semester, text: semester.name });
+            this.semesters.push({
+              value: semester,
+              text: semester.semester_name,
+            });
           });
         })
         .catch((error) => console.log(error));
@@ -224,12 +202,17 @@ export default {
 };
 </script>
 <style scoped>
-.label {
+.grid_view p {
   font-size: 1rem;
   margin: 0.5rem;
   font-weight: 600;
 }
 .card {
   border: none !important;
+}
+.grid_view {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(92px, 1fr));
+  grid-template-rows: repeat(6, minmax(92px, 1fr));
 }
 </style>

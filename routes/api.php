@@ -45,12 +45,16 @@ Route::group(["middleware" => ["auth:sanctum"]], function ($route) {
     $route->get('/get_student_year_marks/{id}/{year_id}', [StudentController::class, 'getYearMarks']);
     $route->get('/get_student_year_history/{id}/{year_id}', [StudentController::class, 'getYearHistory']);
     $route->post('/get_years', [YearController::class, 'get_years']);
-    $route->post('/get_semesters', [YearController::class, 'get_semesters']);
+    $route->post('/get_semesters/{year_id}', [YearController::class, 'get_semesters']);
     $route->get('/get_year/{id}', [YearController::class, 'getYear']);
+    $route->post('/get_student_years/{id}', [StudentController::class, 'getStudentYear']);
     $route->post('/get_courses', [CourseController::class, 'getCourses']);
+    $route->post('/get_courses_by_selection', [CourseController::class, 'getCoursesBySelection']);
     $route->post('/add_course', [CourseController::class, 'addCourse']);
+    $route->post('/add_course_to_student', [CourseController::class, 'addCourseToStudent']);
     $route->get('/get_sections', [SectionController::class, 'getSections']);
     $route->post('/add_supervisor', [SupervisorController::class, 'addSuper']);
     $route->get('/dates', [DateController::class, 'getDates']);
     $route->post('/set_dates', [DateController::class, 'setDates']);
+
 });

@@ -16,8 +16,8 @@ class CreateStudentHallPeriodsTable extends Migration
         Schema::create('student_hall_periods', function (Blueprint $table) {
             $table->id();
             $table->foreignId("studen_id")->references("id")->on("students");
-            $table->foreignId("hall_id")->references("id")->on("halls");
-            $table->foreignId("period_id")->references("id")->on("periods");
+            $table->foreignId("chp_id")->references("id")->on("course_hall_periods");
+          
             $table->timestamps();
         });
     }

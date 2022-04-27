@@ -1,7 +1,6 @@
 <template>
   <div>
     <div class="year-container">
-      
       <h6 style="display: inline" class="name">{{ year.name }}</h6>
       <p style="display: inline">للعام الدراسي</p>
       <p style="display: inline" class="name">{{ yearHistory.year_date }}</p>
@@ -73,28 +72,19 @@ export default {
         .get(`/api/get_student_year_marks/${student_id}/${year_id}`)
         .then((res) => {
           this.marks = res.data;
-          let removed = [];
 
           for (let index = 0; index < this.marks.length; index++) {
             let mark = this.marks[index];
+            if (mark.with_help) mark.fullMark = 60;
+            else mark.fullMark = mark.mark1 + mark.mark2;
 
-            if (mark.marks.length == 2) {
-              mark.fullMark = mark.marks[0].mark + mark.marks[1].mark;
-              mark.fullMarkName = toArabicWord(mark.fullMark);
-              if (mark.course.year_semester.semester_id == 1)
-                this.firstSemesterMarks.push(mark);
-              else this.secondSemesterMarks.push(mark);
-            } else {
-              let index = this.marks.indexOf(mark);
-              removed.push(index);
-            }
+            mark.fullMarkName =  toArabicWord(mark.fullMark);
+
+            if (mark.course.year_semester.semester_name === "فصل أول")
+              this.firstSemesterMarks.push(mark);
+            else this.secondSemesterMarks.push(mark);
           }
 
-          for (let index = 0; index < removed.length; index++) {
-            const element = removed[index];
-            console.log(element);
-            this.marks.splice(element);
-          }
           let m = 0;
           let fc = 0;
           for (let index = 0; index < this.marks.length; index++) {

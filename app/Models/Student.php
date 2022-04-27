@@ -33,6 +33,10 @@ class Student extends Authenticatable
         return $this->hasOne(StudentYear::class,'student_id');
     }
 
+    public function year_history(){
+        return $this->hasOne(StudentStatus::class,'student_id');
+    }
+
     public function courses(){
         return $this->hasMany(StudentCourses::class,'student_id');
     }

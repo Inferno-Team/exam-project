@@ -14,6 +14,7 @@ class Course extends Model
         'name',
         'type',
         'section_id',
+        'selection_type',
         'sy_id',
         'created_at',
         'updated_at',

@@ -16,9 +16,14 @@ class CreateStudentStatus extends Migration
         Schema::create('student_status', function (Blueprint $table) {
             $table->id();
             $table->foreignId('student_id')->references('id')->on('students');
-            $table->enum('divition', ['عام', 'موازي', 'معهد تقانة', 'مدرسة تقانات', 'تحويل مماثل']);
-            $table->string('forgin_language');
-            $table->string('local_address');
+            $table->enum('status', [
+                'ناجح',
+                'راسب',
+                'منقول',
+                'مستنفذ'
+            ]);
+            $table->foreignId('year_id')->references('id')->on('years');
+            $table->string('year_date');
             $table->timestamps();
         });
     }

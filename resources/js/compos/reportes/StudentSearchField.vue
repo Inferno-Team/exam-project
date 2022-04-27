@@ -5,11 +5,9 @@
     class="card m-3 student"
   >
     <span class="x" @click="close" />
-    <b-form @submit.prevent style="padding-left: 3rem; padding-right: 3rem">
+    <div style="padding-left: 3rem; padding-right: 3rem">
       <b-form-group
         id="input-group-1"
-        label-cols="4"
-        label-cols-lg="2"
         label-size="lg"
         label="رقم الجامعي للطالب"
         label-class="student_label"
@@ -26,11 +24,154 @@
         <b-form-input
           id="input-1"
           v-model="univ_id"
-          type="text"
+          type="number"
           style="width: fit-content"
           required
         ></b-form-input>
       </b-form-group>
+
+      <b-form-group
+        id="input-group-2"
+        label-size="lg"
+        label="رقم وثيقة التبرع بالدم"
+        label-class="student_label"
+        label-for="input-2"
+        class="univ_number_class"
+        style="
+          display: flex;
+          align-content: center;
+          justify-content: center;
+          align-items: center;
+          flex-direction: row;
+        "
+      >
+        <b-form-input
+          id="input-2"
+          v-model="bloodNumber"
+          type="number"
+          style="width: fit-content"
+          required
+        ></b-form-input>
+      </b-form-group>
+
+      <b-form-group
+        id="input-group-3"
+        label-size="lg"
+        label="تاريخ وثيقة التبرع بالدم"
+        label-class="student_label"
+        label-for="input-3"
+        class="univ_number_class"
+        style="
+          display: flex;
+          align-content: center;
+          justify-content: flex-start;
+          align-items: center;
+          flex-direction: row;
+        "
+      >
+        <b-form-input
+          id="input-3"
+          v-model="bloodDate"
+          type="date"
+          style="width: fit-content"
+          required
+        ></b-form-input>
+      </b-form-group>
+
+      <b-form-group
+        id="input-group-4"
+        label-size="lg"
+        label="رقم إيصال رسود الدفع"
+        label-class="student_label"
+        label-for="input-4"
+        class="univ_number_class"
+        style="
+          display: flex;
+          align-content: center;
+          justify-content: center;
+          align-items: center;
+          flex-direction: row;
+        "
+      >
+        <b-form-input
+          id="input-4"
+          v-model="checkNumber"
+          type="number"
+          style="width: fit-content"
+          required
+        ></b-form-input>
+      </b-form-group>
+
+      <b-form-group
+        id="input-group-5"
+        label-size="lg"
+        label="تاريخ إيصال رسود الدفع"
+        label-class="student_label"
+        label-for="input-5"
+        class="univ_number_class"
+        style="
+          display: flex;
+          align-content: center;
+          justify-content: flex-start;
+          align-items: center;
+          flex-direction: row;
+        "
+      >
+        <b-form-input
+          id="input-5"
+          v-model="checkDate"
+          type="date"
+          style="width: fit-content"
+          required
+        ></b-form-input>
+      </b-form-group>
+
+      <b-form-group
+        id="input-group-6"
+        label-size="lg"
+        label="رقم وثيقة التخرج"
+        label-class="student_label"
+        label-for="input-6"
+        class="univ_number_class"
+        style="
+          display: flex;
+          align-content: center;
+          justify-content: center;
+          align-items: center;
+          flex-direction: row;
+        "
+      >
+        <b-form-input
+          id="input-6"
+          v-model="graduationNumber"
+          type="number"
+          style="width: fit-content"
+        ></b-form-input>
+      </b-form-group>
+
+      <b-form-group
+        id="input-group-7"
+        label-size="lg"
+        label="تاريخ وثيقة التخرج"
+        label-class="student_label"
+        label-for="input-7"
+        class="univ_number_class"
+        style="
+          display: flex;
+          align-content: center;
+          justify-content: flex-start;
+          align-items: center;
+          flex-direction: row;
+        "
+      >
+        <b-form-input
+          id="input-5"
+          v-model="graduationDate"
+          type="date"
+          style="width: fit-content"
+        ></b-form-input>
+      </b-form-group>
+
       <b-button
         @click.prevent="generateReport()"
         v-if="this.univ_id !== ''"
@@ -38,7 +179,7 @@
         variant="primary"
         >توليد</b-button
       >
-    </b-form>
+    </div>
   </div>
 </template>
 <script>
@@ -47,11 +188,31 @@ export default {
     return {
       univ_id: "",
       is_shown: false,
+
+      bloodNumber: null,
+      bloodDate: null,
+
+      checkNumber: null,
+      checkDate: null,
+
+      graduationNumber: null,
+      graduationDate: null,
     };
   },
   methods: {
     generateReport() {
-      this.$emit("generate", this.univ_id);
+      this.$emit("generate", {
+        univ_id: this.univ_id,
+
+        blood: this.bloodNumber,
+        bloodDate: this.bloodDate,
+
+        check: this.checkNumber,
+        checkDate: this.checkDate,
+
+        graduationNumber: this.graduationNumber,
+        graduationDate: this.graduationDate,
+      });
     },
     close(e) {
       this.is_shown = !this.is_shown;
@@ -76,7 +237,7 @@ export default {
   max-height: fit-content;
   margin: auto !important;
   opacity: 0;
-  transform: translateY(0%);
+  transform: translateY(-100%);
   transition: 1s;
 }
 .x {
@@ -93,6 +254,6 @@ export default {
 }
 .shown {
   opacity: 1;
-  transform: translateY(100%);
+  transform: translateY(20%);
 }
 </style>

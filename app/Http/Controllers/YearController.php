@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Semester;
 use App\Models\Year;
+use App\Models\YearSemester;
 use Illuminate\Http\Request;
 
 class YearController extends Controller
@@ -15,9 +15,10 @@ class YearController extends Controller
             'years' => $years
         ], 200);
     }
-    public function get_semesters()
+    public function get_semesters($year_id)
     {
-        $semesters = Semester::all();
+        $semesters = YearSemester::where('year_id',$year_id)->get();
+        
         return response()->json([
             'years' => $semesters
         ], 200);
