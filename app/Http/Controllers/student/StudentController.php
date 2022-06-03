@@ -180,4 +180,17 @@ class StudentController extends Controller
             'msg' => 'لم يتم العثور على هذا الطالب'
         ], 404);
     }
+
+    public function getYearStudentsType($yearId, $type)
+    {
+        $thisYear = date('Y');
+        $thisYearDate = ($thisYear - 1) . "/$thisYear";
+
+        $students = StudentStatus::where('status', $type)
+            ->where('year_id', $yearId)->with('student')
+            ->where('year_date', '2012/2013')->get();
+        info("type : $type , yearId : $yearId , date : 2012/2013");
+        info(count($students));
+        return response()->json($students, 200);
+    }
 }

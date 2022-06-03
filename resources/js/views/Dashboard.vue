@@ -23,11 +23,6 @@ export default {
           href: "/dashboard/show-all.student",
         },
         {
-          title: "دكتور",
-          icon: "fa fa-user",
-          href: "/dashboard/show-all.doctor",
-        },
-        {
           title: "إضافة علامات الطلاب",
           icon: "fa fa-user",
           child: [

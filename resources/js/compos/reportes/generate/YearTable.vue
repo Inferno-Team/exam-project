@@ -140,6 +140,7 @@ td {
   border: 1px solid;
   padding: 0.5rem;
 }
+
 table {
   width: 100%;
   /* display: inline-block; */

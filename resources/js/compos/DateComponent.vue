@@ -25,7 +25,6 @@ export default {
   components: { DatePicker },
 
   mounted() {
-      console.log(this.$props.oldDate);
     if (this.oldDate != undefined) {
       var x = new Date();
       x.setTime(this.$props.oldDate);

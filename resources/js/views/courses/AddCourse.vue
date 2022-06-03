@@ -10,7 +10,6 @@
           id="input-1"
           v-model="course_name"
           type="text"
-          style="width: fit-content"
           required
         />
       </div>
@@ -178,6 +177,7 @@ export default {
         .post(`/api/get_semesters/${id}`)
         .then((response) => {
           console.log(response.data.years);
+          this.semesters = [];
           response.data.years.forEach((semester) => {
             this.semesters.push({
               value: semester,
@@ -213,6 +213,6 @@ export default {
 .grid_view {
   display: grid;
   grid-template-columns: repeat(2, minmax(92px, 1fr));
-  grid-template-rows: repeat(6, minmax(92px, 1fr));
+  grid-template-rows: repeat(3, minmax(92px, 1fr));
 }
 </style>

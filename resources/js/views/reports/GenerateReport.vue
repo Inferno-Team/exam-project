@@ -52,13 +52,27 @@ export default {
           title: "إنشاء تكليف امتحاني",
           desc: "إنشاء تكليف امتحاني للدكاترة",
         },
+        {
+          title: "تقرير بأسماء الطلاب المنقولين",
+          desc: "",
+        },
+        {
+          title: "تقرير بأسماء الطلاب الراسبين",
+          desc: "",
+        },
+        {
+          title: "تقرير بأسماء الطلاب الناجحين",
+          desc: "",
+        },
       ],
       is_shows: false,
       is_shows2: false,
+      is_shows3: false,
       notify: {
         msg: "",
         code: -1,
       },
+      reportType: ["منقول", "راسب", "ناجح"],
     };
   },
   methods: {
@@ -66,7 +80,14 @@ export default {
       const _index = event.target.id;
       if (_index === "0") {
         this.is_shows = !this.is_shows;
-      } else this.is_shows2 = !this.is_shows2;
+      } else if (_index === "1") this.is_shows2 = !this.is_shows2;
+      else if (_index === "3" || _index === "4" || _index === "5")
+        this.$router.push({
+          name: "report",
+          params: {
+            object: this.reportType[_index - 3],
+          },
+        });
     },
     generate({
       univ_id,
@@ -119,8 +140,10 @@ export default {
 <style scoped>
 .report-container {
   display: grid;
-  grid-template-columns: repeat(2, minmax(92px, 0.5fr));
+  grid-template-columns: repeat(3, minmax(92px, 0.5fr));
   justify-items: center;
   gap: 10px;
+  height: 99%;
+  overflow-y: auto;
 }
 </style>

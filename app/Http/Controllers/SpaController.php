@@ -10,9 +10,9 @@ class SpaController extends Controller
 {
     public function index()
     {
-        CheckCurrentTime::dispatch();
-        CheckStudentStatus::dispatch();
-        CheckStudents::dispatch();
+        // CheckCurrentTime::dispatch();
+        // CheckStudentStatus::dispatch();
+        // CheckStudents::dispatch();
         return view('spa');
     }
 }

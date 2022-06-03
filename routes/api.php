@@ -31,7 +31,7 @@ Route::post('/submit', [LoginController::class, 'logIn']);
 
 Route::group(["middleware" => ["auth:sanctum"]], function ($route) {
     $route->post('/logout', [LoginController::class, 'logout']);
-    
+
     $route->post('/get_all_students/{year}', [StudentController::class, 'getAllStudent']);
     $route->get('/search', [StudentController::class, 'search']);
     $route->get('/search_by_id', [StudentController::class, 'searchUniv']);
@@ -44,6 +44,7 @@ Route::group(["middleware" => ["auth:sanctum"]], function ($route) {
     $route->get('/get_student_courses/{id}', [StudentController::class, 'getCourses']);
     $route->get('/get_student_year_marks/{id}/{year_id}', [StudentController::class, 'getYearMarks']);
     $route->get('/get_student_year_history/{id}/{year_id}', [StudentController::class, 'getYearHistory']);
+    $route->get('/get_year_student_with_type/{yearId}/{type}', [StudentController::class, 'getYearStudentsType']);
     $route->post('/get_years', [YearController::class, 'get_years']);
     $route->post('/get_semesters/{year_id}', [YearController::class, 'get_semesters']);
     $route->get('/get_year/{id}', [YearController::class, 'getYear']);
@@ -56,5 +57,4 @@ Route::group(["middleware" => ["auth:sanctum"]], function ($route) {
     $route->post('/add_supervisor', [SupervisorController::class, 'addSuper']);
     $route->get('/dates', [DateController::class, 'getDates']);
     $route->post('/set_dates', [DateController::class, 'setDates']);
-
 });

@@ -47,7 +47,7 @@ export default {
   align-items: center;
   border-top: 1px solid rgba(255, 255, 255, 0.5);
   border-left: 1px solid rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(5px);
+  text-align: center;
   flex-direction: column;
 }
 ._card .content {

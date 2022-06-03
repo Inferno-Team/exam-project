@@ -9,9 +9,9 @@ import AddCourse from './views/courses/AddCourse';
 import GenerateReport from './views/reports/GenerateReport';
 import SetDate from './views/dates/SetDates';
 import MarksReport from './views/reports/templates/MarksReport';
+import StudentReport from './views/reports/templates/StudentReport';
 
-export const routes = [
-    {
+export const routes = [{
         path: '/login',
         name: 'login',
         component: Login
@@ -32,13 +32,6 @@ export const routes = [
                 name: 'show-all-student',
                 path: '/dashboard/show-all.student',
                 component: ShowAllStudent
-            },
-
-            // dashboard - doctors
-            {
-                name: 'add-doctor',
-                path: "/dashboard/show-all.doctor",
-                component: ShowAllDoctor
             },
             {
                 name: 'add-mark1',
@@ -64,7 +57,13 @@ export const routes = [
                 name: 'marks_report',
                 path: '/dashboard/generate/:object',
                 component: MarksReport,
-                props:true
+                props: true
+            },
+            {
+                name: 'report',
+                path: '/dashboard/generate/report/:object',
+                props: true,
+                component: StudentReport
             },
             {
                 name: 'set_dates',

@@ -43,14 +43,14 @@ class CheckStudentStatus implements ShouldQueue
         else {
             $current = $date->current;
             switch ($current) {
-                    // case 'spring-holiday':
+                case 'spring-holiday':
                 case 'summer-holiday': {
                         $now = Carbon::now();
                         $year =  $now->year;
                         // check student courses [marks]
                         $sutdentsCourses = Student::with('courses', 'year')->get();
-                        foreach ($sutdentsCourses as  $student ) {
-                            if ($student->year_year_id == 5) break;
+                        foreach ($sutdentsCourses as  $student) {
+                            if ($student->year->year_id == 5) continue;
                             $courses  = $student->courses;
                             $fieldCourseCounter = 0;
                             foreach ($courses as $course) {
@@ -67,16 +67,18 @@ class CheckStudentStatus implements ShouldQueue
                                 $year_id++;
                             } else
                                 $status = 'راسب';
+
                             StudentStatus::create([
                                 'student_id' => $student->id,
                                 'status' => $status,
                                 'year_id' => $year_id,
-                                'year_date' => ($year - 1) . "/$year"
+                                'year_date' => ($year - 1) . "/" . $year
                             ]);
+                            
                             $studentYear = StudentYear::where('student_id', $student->id)->first();
                             $studentYear->year_id = $year_id;
                             $studentYear->save();
-                            $this->dispatch(new InsertCourseToStudent($student,$year_id));
+                            $this->dispatch(new InsertCourseToStudent($student, $year_id));
                         }
                     }
                     break;

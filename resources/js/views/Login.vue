@@ -81,7 +81,6 @@ export default {
   padding: 0;
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
-  /* direction: rtl; */
   overflow: hidden;
 }
 
@@ -138,7 +137,7 @@ section .welcomeBx {
 }
 
 section .sectionBx .welcomeBx h4 {
-  border-bottom: 4px solid#ff4584;
+  border-bottom: 4px solid #ff4584;
   margin-bottom: 20px;
   font-weight: 600;
   display: inline-block;

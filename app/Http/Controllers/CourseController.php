@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Jobs\InsertCourseStudentJob;
 use App\Models\Course;
+use App\Models\Dates;
 use App\Models\Section;
 use App\Models\Student;
 use App\Models\StudentCourses;
@@ -18,7 +19,25 @@ class CourseController extends Controller
     {
         $year_id = $request->year_id;
         $section_id = $request->section_id;
-        $courses = Course::where('section_id', $section_id)->whereHas('year_semester', fn ($ys) => $ys->where('year_id', $year_id)->with('year'))->with('year_semester.year')->get();
+        $date = Dates::first();
+        $current = '';
+        $semester = '';
+        if (isset($date)) {
+            $current = $date->current;
+        }
+        if ($current == 'first-tirm') {
+            $semester = 'فصل أول';
+        } else if ($current === 'second-tirm') {
+            $semester = 'فصل ثاني';
+        }
+        $courses = Course::where('section_id', $section_id)->whereHas(
+            'year_semester',
+            fn ($ys) => $ys->whereHas(
+                'year',
+                fn ($year) => $year->where('year_id', $year_id)->where('semester_name', $semester)
+            )->with('year')
+        )->with('year_semester.year')->get();
+        info($courses);
         // where('year_id', $year_id)->get();
         return response()->json([
             'courses' => $courses,
@@ -34,8 +53,8 @@ class CourseController extends Controller
         $semester_id = $request->semester_id;
         $type = $request->type;
         $section_id  = $request->section_id;
-        $sy = YearSemester::find($request->semester_id);
-        
+        $sy = YearSemester::find($semester_id);
+
         if (!isset($sy)) {
             return response()->json([
                 'code' => 404,
@@ -86,7 +105,7 @@ class CourseController extends Controller
                 'course',
                 fn ($course) => $course->where('selection_type', $request->selection_name)
             )->with('course')->get();
-           info(count($studentCourses) . '   ' . $request->selection_size);
+        info(count($studentCourses) . '   ' . $request->selection_size);
         if (count($studentCourses) >= $request->selection_size) {
             return response()->json([
                 'code' => 400,
