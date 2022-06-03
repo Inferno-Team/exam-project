@@ -41,7 +41,7 @@
   </div>
 </template>
 <script>
-import { toArabicWord } from "number-to-arabic-words/index.js";
+// import { toArabicWord } from "number-to-arabic-words/index.js";
 export default {
   props: ["sid", "yid"],
   mounted() {
@@ -78,7 +78,8 @@ export default {
             if (mark.with_help) mark.fullMark = 60;
             else mark.fullMark = mark.mark1 + mark.mark2;
 
-            mark.fullMarkName =  toArabicWord(mark.fullMark);
+            // mark.fullMarkName =  toArabicWord(mark.fullMark);
+            mark.fullMarkName = '';
 
             if (mark.course.year_semester.semester_name === "فصل أول")
               this.firstSemesterMarks.push(mark);
