@@ -8,13 +8,6 @@
           <b-button
             class="my-sm-0"
             type="submit"
-            @click="dashboard"
-            v-if="isLoggedIn"
-            >لوحة الإدارة</b-button
-          >
-          <b-button
-            class="my-sm-0"
-            type="submit"
             @click="logout"
             v-if="isLoggedIn"
             >تسجيل الخروج</b-button
@@ -50,7 +43,7 @@ export default {
         .then((response) => {
           console.log(response);
           if (response.status === 200) {
-            location.reload();
+           this.$router.push({ name: "login" });
           }
         })
         .catch((error) => console.log(error));

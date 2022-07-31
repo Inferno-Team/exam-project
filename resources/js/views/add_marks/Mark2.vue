@@ -120,6 +120,24 @@
           required
         ></b-form-checkbox>
       </b-form-group>
+      <b-form-group
+        id="input-group-12"
+        v-if="
+          this.selected.year.name !== '' && this.selected.section.name !== ''
+        "
+        label="هل الطالب مستنفذ ؟"
+        label-for="input-12"
+        style="margin-bottom: 1rem"
+      >
+        <b-form-checkbox
+          id="input-12"
+          v-model="with_help2"
+          style="width: 17%"
+          value="true"
+          unchecked-value="false"
+          required
+        ></b-form-checkbox>
+      </b-form-group>
 
       <b-button
         @click.prevent="addMark()"
@@ -155,7 +173,8 @@ export default {
         msg: "",
         code: -1,
       },
-      with_help:false,
+      with_help: false,
+      with_help2:false,
       student: null,
       courses: [],
       years: [],
@@ -226,7 +245,8 @@ export default {
           student_id: this.student.id,
           mark: this.mark,
           course_id: this.selected_course.id,
-          with_help:this.with_help
+          with_help: this.with_help,
+          is_drained: this.with_help2, // مستنفذ
         })
         .then((res) => {
           this.notify = {

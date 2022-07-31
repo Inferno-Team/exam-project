@@ -14,8 +14,9 @@ export default {
       menu: [
         {
           header: false,
-          title: "Dashboard",
+          title: "الصفحة الرئيسية",
           icon: "fa fa-bars",
+          href:"/dashboard/"
         },
         {
           title: "عرض كافة الطلاب",

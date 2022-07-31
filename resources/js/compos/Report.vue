@@ -15,7 +15,7 @@ export default {
   props: ["data", "index"],
   methods: {
     move(event) {
-      this.$emit("report-click", event);
+      this.$emit("report-click", this.index);
     },
   },
   data() {

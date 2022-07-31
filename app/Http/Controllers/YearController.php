@@ -19,9 +19,7 @@ class YearController extends Controller
     {
         $semesters = YearSemester::where('year_id',$year_id)->get();
         
-        return response()->json([
-            'years' => $semesters
-        ], 200);
+        return response()->json($semesters, 200);
     }
     
     public function getYear($id)

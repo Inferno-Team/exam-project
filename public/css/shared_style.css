@@ -1,0 +1,33 @@
+.floating-container {
+    position: fixed;
+    width: 100px;
+    height: 50px;
+    top: 0;
+    left: 0;
+    margin: 35px 25px;
+    z-index: 1;
+}
+
+.floating-container:hover .floating-button {
+    box-shadow: 0 10px 25px rgba(44, 179, 240, 0.6);
+    transform: translatey(5px);
+}
+
+.floating-container .floating-button {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: #151418;
+    bottom: 0;
+    border-radius: 50%;
+    left: 0;
+    margin: auto;
+    color: white;
+    line-height: 50px;
+    text-align: center;
+    font-size: 17px;
+    z-index: 100;
+    box-shadow: 0 10px 25px -5px rgba(105, 105, 105, 0.6);
+    cursor: pointer;
+    transition: 0.3s;
+}

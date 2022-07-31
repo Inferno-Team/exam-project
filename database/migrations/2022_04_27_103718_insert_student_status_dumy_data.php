@@ -20,18 +20,24 @@ class InsertStudentStatusDumyData extends Migration
 
         for ($i = 0; $i < count($students); $i++) {
             $yearId = rand(1, 5);
-            $date = rand(2012, 2022);
+            $date = rand(2000, 2017);
             $st = $students[$i];
             StudentYear::create([
                 'student_id' => $st->id,
                 'year_id' => $yearId,
             ]);
+            $typeId = rand(1, 3);
+            if ($typeId == 1)
+                $type = 'منقول';
+            else if ($typeId == 2)
+                $type = 'راسب';
+            else
+                $type = 'ناجح';
             for ($j = 1; $j <= $yearId; $j++) {
                 DB::table('student_status')->insert([
                     'student_id' => $st->id,
                     'year_id' => $j,
-
-                    'status' => 'منقول',
+                    'status' => $type,
                     'year_date' => "$date/" . ($date + 1)
                 ]);
                 $date++;

@@ -17,7 +17,7 @@ class StudentController extends Controller
 {
     public function getAllStudent($year)
     {
-        $students = Student::whereHas('year', fn ($query) => $query
+        $students = Student::orderBy('name')->whereHas('year', fn ($query) => $query
             ->where('year_id', $year))->with('year.year')->get();
         return response()->json(['students' => $students], 200);
     }
@@ -50,10 +50,16 @@ class StudentController extends Controller
         $name = $request->name;
         $last_name = $request->l_name;
         $father_name = $request->f_name == '' ? $last_name : $request->f_name;
-        $students = Student::where('name', 'like', '%' . $name . '%')
-            ->where('father_name', 'like', '%' . $father_name . '%')
-            ->where('last_name', 'like', '%' . $last_name . '%')
-            ->with('year.year')->get();
+        // $students = Student::where('name', 'like', '%' . $name . '%')
+        //     ->where('father_name', 'like', '%' . $father_name . '%')
+        //     ->where('last_name', 'like', '%' . $last_name . '%')
+        //     ->with('year.year')->whereHas('year', fn ($query) => $query->orderBy('year_id'))->get();
+        $students = StudentYear::orderBy('year_id')
+            ->whereHas('student', function ($query) use ($name, $father_name, $last_name) {
+                $query->where('name', 'like', '%' . $name . '%')
+                    ->where('father_name', 'like', '%' . $father_name . '%')
+                    ->where('last_name', 'like', '%' . $last_name . '%');
+            })->with('student','year')->get();
         return response()->json(['data' => $students], 200);
     }
 
@@ -144,7 +150,8 @@ class StudentController extends Controller
         } else {
             $courseStudent->mark2 = $mark;
             $fullMark = $mark + $courseStudent->mark1;
-            if ($fullMark >= 54 && $fullMark <= 59) {
+            $is = $request->is_drained ? 54 : 58;
+            if ($fullMark >= $is && $fullMark <= 59) {
                 if ($request->with_help) {
                     $courseStudent->with_help = true;
                     $courseStudent->status = 'ناجح';
@@ -152,7 +159,7 @@ class StudentController extends Controller
                     $courseStudent->status = 'راسب';
                 }
             } else {
-                if ($fullMark > 60)
+                if ($fullMark >= 60)
                     $courseStudent->status = 'ناجح';
                 else  $courseStudent->status = 'راسب';
             }
@@ -170,6 +177,7 @@ class StudentController extends Controller
         if (isset($student)) {
             $years = Year::where('id', '>=', 4)->where('id', '<=', $student->year->year_id)
                 ->get();
+            info($years);
             return response()->json([
                 'code' => 200,
                 'msg' => 'السنوات',
@@ -187,10 +195,9 @@ class StudentController extends Controller
         $thisYearDate = ($thisYear - 1) . "/$thisYear";
 
         $students = StudentStatus::where('status', $type)
-            ->where('year_id', $yearId)->with('student')
-            ->where('year_date', '2012/2013')->get();
-        info("type : $type , yearId : $yearId , date : 2012/2013");
-        info(count($students));
+            ->where('year_id', $yearId)
+            ->where('year_date', $thisYearDate)->with('student')->get();
+
         return response()->json($students, 200);
     }
 }

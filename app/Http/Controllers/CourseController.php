@@ -21,7 +21,7 @@ class CourseController extends Controller
         $section_id = $request->section_id;
         $date = Dates::first();
         $current = '';
-        $semester = '';
+        $semester = '%';
         if (isset($date)) {
             $current = $date->current;
         }
@@ -34,7 +34,7 @@ class CourseController extends Controller
             'year_semester',
             fn ($ys) => $ys->whereHas(
                 'year',
-                fn ($year) => $year->where('year_id', $year_id)->where('semester_name', $semester)
+                fn ($year) => $year->where('year_id', $year_id)->where('semester_name', "like", $semester)
             )->with('year')
         )->with('year_semester.year')->get();
         info($courses);
@@ -90,6 +90,7 @@ class CourseController extends Controller
 
         return response()->json($courses, 200);
     }
+
     public function addCourseToStudent(Request $request)
     {
         // request [ univ_id , course_id , selection_name , selection_size ]
@@ -103,9 +104,10 @@ class CourseController extends Controller
         $studentCourses = StudentCourses::where('student_id', $student->id)
             ->whereHas(
                 'course',
-                fn ($course) => $course->where('selection_type', $request->selection_name)
+                function ($course) use ($request) {
+                    $course->where('selection_type', $request->selection_name);
+                }
             )->with('course')->get();
-        info(count($studentCourses) . '   ' . $request->selection_size);
         if (count($studentCourses) >= $request->selection_size) {
             return response()->json([
                 'code' => 400,

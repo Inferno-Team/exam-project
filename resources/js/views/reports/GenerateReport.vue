@@ -2,8 +2,8 @@
   <div>
     <div class="report-container">
       <Report
-        v-for="(_, index) in this.reports"
-        :data="reports[index]"
+        v-for="(rep, index) in this.reports"
+        :data="rep"
         :key="index"
         :index="index"
         @report-click="click"
@@ -20,6 +20,18 @@
         @reset-values="reset2"
         style="position: absolute; right: 50%; top: 0%"
       />
+      <ExamAssignmentForDoctors
+        :is_shows="is_shows3"
+        style="position: absolute; right: 50%; top: 0%"
+        @response="onSelectDoctorResponse"
+        @reset-values="reset3"
+      />
+      <ExamAssignmentForSupervisor
+        :is_shows="is_shows4"
+        style="position: absolute; right: 50%; top: 0%"
+        @response="onSelectDoctorResponse"
+        @reset-values="reset4"
+      />
     </div>
     <Notification :notification="notify" />
   </div>
@@ -29,6 +41,8 @@ import Report from "../../compos/Report.vue";
 import StudentSearchField from "../../compos/reportes/StudentSearchField.vue";
 import AddSelectableCourse from "../../compos/reportes/AddSelectableCourse.vue";
 import Notification from "../../compos/Notification.vue";
+import ExamAssignmentForDoctors from "../../compos/reportes/ExamAssignmentForDoctors.vue";
+import ExamAssignmentForSupervisor from "../../compos/reportes/ExamAssignmentForSupervisor.vue";
 
 export default {
   components: {
@@ -36,13 +50,15 @@ export default {
     StudentSearchField,
     AddSelectableCourse,
     Notification,
+    ExamAssignmentForDoctors,
+    ExamAssignmentForSupervisor,
   },
   data() {
     return {
       reports: [
         {
           title: "توليد كشف علامات",
-          desc: "",
+          desc: "توليد كشف علامات لكافة الطلاب",
         },
         {
           title: "اخيتار مادة",
@@ -50,24 +66,29 @@ export default {
         },
         {
           title: "إنشاء تكليف امتحاني",
-          desc: "إنشاء تكليف امتحاني للدكاترة",
+          desc: "إنشاء تكليف للدكاترة لكتابة اسئلة موادهم",
+        },
+        {
+          title: "إنشاء تكليف مراقبة",
+          desc: "إنشاء تكليف للدكاترة و المهندسين و الموظفين لمراقبة العملية الامتحانية",
         },
         {
           title: "تقرير بأسماء الطلاب المنقولين",
-          desc: "",
+          desc: "تقرير بأسماء الطلاب المنقولين",
         },
         {
           title: "تقرير بأسماء الطلاب الراسبين",
-          desc: "",
+          desc: "تقرير بأسماء الطلاب الراسبين",
         },
         {
           title: "تقرير بأسماء الطلاب الناجحين",
-          desc: "",
+          desc: "تقرير بأسماء الطلاب الناجحين",
         },
       ],
       is_shows: false,
       is_shows2: false,
       is_shows3: false,
+      is_shows4: false,
       notify: {
         msg: "",
         code: -1,
@@ -76,16 +97,20 @@ export default {
     };
   },
   methods: {
-    click(event) {
-      const _index = event.target.id;
-      if (_index === "0") {
+    click(id) {
+      const _index = id;
+      if (_index == 0) {
         this.is_shows = !this.is_shows;
-      } else if (_index === "1") this.is_shows2 = !this.is_shows2;
-      else if (_index === "3" || _index === "4" || _index === "5")
+      } else if (_index == 1) this.is_shows2 = !this.is_shows2;
+      else if (_index == 2) {
+        this.is_shows3 = !this.is_shows3;
+      } else if (_index == 3) {
+        this.is_shows4 = !this.is_shows4;
+      } else if (_index == 4 || _index == 5 || _index == 6)
         this.$router.push({
           name: "report",
           params: {
-            object: this.reportType[_index - 3],
+            object: this.reportType[_index - 4],
           },
         });
     },
@@ -120,6 +145,13 @@ export default {
     reset2(value) {
       this.is_shows2 = value;
     },
+    reset3(value) {
+      this.is_shows3 = value;
+    },
+    reset4(value) {
+      this.is_shows4 = value;
+    },
+    onSelectDoctorResponse(response) {},
     onSelectCourseResponse(response) {
       // response : {course? , code , msg}
       console.log(response);

@@ -1,8 +1,10 @@
 <template>
-  <div>
+  <div style="height: 100%;">
     <YearTab :years="years" @selectYear="onSelectedYearChange" />
     <YearStudentsTable :students="students" />
-    <button @click.prevent="printXLSX">طباعة</button>
+      <div class="floating-container">
+      <div class="floating-button" @click.prevent="printXLSX">طباعة</div>
+    </div>
   </div>
 </template>
 <script>
@@ -15,23 +17,23 @@ export default {
   components: { YearTab, YearStudentsTable },
   mounted() {
     this.getYears();
-    switch (this.$props.object) {
-      case "ناجح":
-        {
-          // send get request for all successed student with tap to select student year
-        }
-        break;
-      case "راسب":
-        {
-          // send get request for all passed student with tap to select student year
-        }
-        break;
-      case "منقول":
-        {
-          // send get request for all failure student with tap to select student year
-        }
-        break;
-    }
+    // switch (this.$props.object) {
+    //   case "ناجح":
+    //     {
+    //       // send get request for all successed student with tap to select student year
+    //     }
+    //     break;
+    //   case "راسب":
+    //     {
+    //       // send get request for all passed student with tap to select student year
+    //     }
+    //     break;
+    //   case "منقول":
+    //     {
+    //       // send get request for all failure student with tap to select student year
+    //     }
+    //     break;
+    // }
   },
   methods: {
     getYears() {
@@ -78,3 +80,9 @@ export default {
   },
 };
 </script>
+<style scoped>
+.floating-container{
+  top: 80% ;
+
+}
+</style>

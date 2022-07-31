@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Jobs\CheckCurrentTime;
 use App\Jobs\CheckStudents;
 use App\Jobs\CheckStudentStatus;
+use App\Jobs\InsertAllCoursesToStudentsOnce;
+use App\Jobs\InsertStudentsMarks;
+use App\Jobs\InsertStudentsStatus;
 
 class SpaController extends Controller
 {
@@ -12,7 +15,10 @@ class SpaController extends Controller
     {
         // CheckCurrentTime::dispatch();
         // CheckStudentStatus::dispatch();
-        // CheckStudents::dispatch();
+        // CheckStudents::dispatch();   
+        // InsertAllCoursesToStudentsOnce::dispatch();
+        // InsertStudentsMarks::dispatch();
+        // InsertStudentsStatus::dispatch();
         return view('spa');
     }
 }

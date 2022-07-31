@@ -4,7 +4,7 @@
     :class="{ shown: this.is_shown === true }"
     class="card m-3 student"
   >
-    <span class="x" @click="close" />
+    <span class="x" @click="close"></span>
     <div style="padding-left: 3rem; padding-right: 3rem">
       <b-form-group
         id="input-group-1"
@@ -141,10 +141,6 @@
 </template>
 <script>
 export default {
-  mounted() {
-    this.getYears();
-    // this.getSemesters();
-  },
   data() {
     return {
       selectedCourse: {
@@ -192,22 +188,14 @@ export default {
       this.is_shown = !this.is_shown;
       this.$emit("reset-values", false);
     },
-    getYears(id) {
-      axios
-        .post("/api/get_years", { id: id })
-        .then((response) => {
-          response.data.years.forEach((year) => {
-            if (year.id >= 4) this.years.push({ value: year, text: year.name });
-          });
-        })
-        .catch((error) => console.log(error));
-    },
+
     getSemesters(id) {
+       this.semesters = [];
       axios
         .post(`/api/get_semesters/${id}`)
         .then((response) => {
-          this.semesters = [];
-          response.data.years.forEach((semester) => {
+         
+          response.data.forEach((semester) => {
             this.semesters.push({
               value: semester,
               text: semester.semester_name,
@@ -236,11 +224,10 @@ export default {
       this.getSemesters(this.selected_year.id);
     },
     onStudentUnivIdChange() {
+       this.years = [];
       axios
         .post(`/api/get_student_years/${this.univ_id}`)
         .then((response) => {
-          console.log(response.data);
-          this.years = [];
           response.data.years.forEach((year) => {
             if (year.id >= 4) this.years.push({ value: year, text: year.name });
           });
@@ -251,12 +238,12 @@ export default {
         });
     },
     getCourses() {
+      this.courses = [];
       axios
         .post("/api/get_courses_by_selection", {
           selection: this.selectionType,
         })
         .then((response) => {
-          this.courses = [];
           response.data.forEach((course) => {
             this.courses.push({ value: course, text: course.name });
           });
@@ -291,7 +278,7 @@ export default {
   },
 };
 </script>
-<style >
+<style scoped >
 .student {
   padding: 1rem;
   max-width: fit-content;

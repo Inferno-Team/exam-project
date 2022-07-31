@@ -2,7 +2,7 @@
   <div class="year-tab-container">
     <div v-for="(year, index) in years" :key="index" >
       <b-button
-        :id="(index+1)"
+        :id="year.id"
         variant="primary"
         class="year-button"
         @click="click($event)"

@@ -1,6 +1,9 @@
 <template>
   <div class="marks-container">
-    <button @click.prevent="printPDF">طباعة</button>
+    <div class="floating-container">
+      <div class="floating-button" @click.prevent="printPDF">طباعة</div>
+    </div>
+
     <div id="printable" style="margin: 1rem; padding: 1rem">
       <p>
         جامعة حلب <br />
@@ -34,7 +37,7 @@
         <!-- this would be the student first year we currentlly dont have it on our system -->
         <p>وحتى الدورة الفصلية</p>
         <!-- this would be the current semester -->
-        <p class="name">الأولى</p>
+        <p class="name">{{ thisSemester }}</p>
         <p>للعام الدراسي</p>
         <p class="name">{{ thisYear }}</p>
 
@@ -42,7 +45,7 @@
         <!-- this would be the avrage of student marks -->
         <p class="name">{{ fullMark }}</p>
         <p>التقدير العام</p>
-        <p class="name">جيد جداً</p>
+        <p class="name">{{ rank }}</p>
         <div
           style="display: inline"
           v-if="this.object.graduationNumber !== null"
@@ -85,6 +88,7 @@ export default {
   props: ["object"],
   mounted() {
     this.getStudent();
+    this.getThisSemester();
   },
   data() {
     return {
@@ -93,6 +97,8 @@ export default {
       thisYear: "",
       student: {},
       fullMark: 0.0,
+      rank: "",
+      thisSemester: "",
     };
   },
   methods: {
@@ -132,11 +138,22 @@ export default {
       this.thisYear = `${_time - 1}/${_time}`;
     },
     avrage(avr) {
-      this.fullMark += avr.avr;
-      console.log(avr.i === this.year.id);
+      this.fullMark += parseFloat(avr.avr);
+      console.log(this.fullMark);
       if (avr.i === this.year.id) {
-        let n = Math.floor((this.fullMark / avr.i) * 100) / 100;
-        this.fullMark = n;
+        this.fullMark /= avr.i;
+        this.fullMark = parseFloat(this.fullMark.toFixed(2));
+        if (this.fullMark < 60) {
+          this.rank = "راسب";
+        } else if (this.fullMark >= 60 && this.fullMark < 75.0) {
+          this.rank = "جيد";
+        } else if (this.fullMark >= 75.0 && this.fullMark < 90) {
+          this.rank = "جيد جداً";
+        } else if (this.fullMark >= 90 && this.fullMark < 95) {
+          this.rank = "ممتاز";
+        } else {
+          this.rank = "ممتاز مع مرتبة الشرف";
+        }
       }
     },
     printPDF() {
@@ -154,12 +171,30 @@ export default {
       //   format: [4, 2],
       // });
     },
+    getThisSemester() {
+      axios
+        .get("/api/dates")
+        .then((result) => {
+          let date = result.data;
+          if (date == null) this.thisSemester = "فصل الاول";
+          else {
+            if (
+              date.current === "first-tirm" ||
+              date.current === "first-tirm-exam" ||
+              date.current === "spring-holiday"
+            )
+              this.thisSemester = "فصل الاول";
+            else this.thisSemester = "فصل الثاني";
+          }
+        })
+        .catch((err) => {});
+    },
   },
 };
 </script>
 <style scoped>
 .marks-container {
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 .name {
   font-size: 19px;

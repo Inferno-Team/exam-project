@@ -174,7 +174,7 @@
 
       <b-button
         @click.prevent="generateReport()"
-        v-if="this.univ_id !== ''"
+       
         style="margin-top: 1.5rem"
         variant="primary"
         >توليد</b-button
@@ -223,6 +223,7 @@ export default {
   watch: {
     is_shows: {
       handler(n, o) {
+      
         this.is_shown = n;
         this.univ_id = "";
       },

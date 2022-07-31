@@ -3,6 +3,7 @@
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DateController;
+use App\Http\Controllers\doctors\DoctorController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\student\StudentController;
@@ -50,6 +51,10 @@ Route::group(["middleware" => ["auth:sanctum"]], function ($route) {
     $route->get('/get_year/{id}', [YearController::class, 'getYear']);
     $route->post('/get_student_years/{id}', [StudentController::class, 'getStudentYear']);
     $route->post('/get_courses', [CourseController::class, 'getCourses']);
+    $route->post('/get_doctors', [DoctorController::class, 'getDoctors']);
+    $route->post('/get_supervisors', [DoctorController::class, 'getSupervisors']);
+    $route->post('/get_supervisor/{id}', [DoctorController::class, 'getSupervisor']);
+    $route->post('/get-doctor/{id}', [DoctorController::class, 'getDoctorById']);
     $route->post('/get_courses_by_selection', [CourseController::class, 'getCoursesBySelection']);
     $route->post('/add_course', [CourseController::class, 'addCourse']);
     $route->post('/add_course_to_student', [CourseController::class, 'addCourseToStudent']);
@@ -57,4 +62,5 @@ Route::group(["middleware" => ["auth:sanctum"]], function ($route) {
     $route->post('/add_supervisor', [SupervisorController::class, 'addSuper']);
     $route->get('/dates', [DateController::class, 'getDates']);
     $route->post('/set_dates', [DateController::class, 'setDates']);
+    $route->post('/load-doctor-courses/{id}', [DoctorController::class, 'getDoctorCourses']);
 });
