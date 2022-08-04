@@ -36,6 +36,10 @@ export default {
               title: "نظري",
               icon: "fa fa-minus",
               href: "/dashboard/add.marks2",
+            }, {
+              title: "من ملف",
+              icon: "fa fa-minus",
+              href: "/dashboard/add.marks",
             },
           ],
         },
