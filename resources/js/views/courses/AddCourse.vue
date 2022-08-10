@@ -6,12 +6,7 @@
     <div class="grid_view">
       <div>
         <p>اسم المادة</p>
-        <b-form-input
-          id="input-1"
-          v-model="course_name"
-          type="text"
-          required
-        />
+        <b-form-input id="input-1" v-model="course_name" type="text" required />
       </div>
 
       <div>
@@ -38,11 +33,10 @@
       <div style="display: flex; justify-content: space-between">
         <div style="width: 11rem">
           <p>نوع المادة</p>
-          <b-form-select
+          <b-form-checkbox
             id="input-4"
             v-model="type"
             @change="selectedType"
-            :options="this.types"
             style="width: 50%"
             required
           />
@@ -117,19 +111,16 @@ export default {
       },
       types: [],
       selectionTypes: [],
-      type: "",
+      type: false,
       course_name: "",
     };
   },
   methods: {
     selectedYearChanged() {
       this.getSemesters(this.selected_year.id);
-      if (this.selected_year.id >= 4) {
-        this.types = ["عادي", "اختياري"];
-      } else this.types = ["عادي"];
     },
     selectedType() {
-      if (this.type === "اختياري") {
+      if (this.type) {
         if (this.selected_year.id == 4)
           this.selectionTypes = ["مجموعة 1", "مجموعة 2"];
         else this.selectionTypes = ["مجموعة 3", "مجموعة 4", "مجموعة 5"];
@@ -176,9 +167,8 @@ export default {
       axios
         .post(`/api/get_semesters/${id}`)
         .then((response) => {
-          console.log(response.data.years);
           this.semesters = [];
-          response.data.years.forEach((semester) => {
+          response.data.forEach((semester) => {
             this.semesters.push({
               value: semester,
               text: semester.semester_name,

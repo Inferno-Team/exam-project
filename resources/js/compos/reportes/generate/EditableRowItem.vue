@@ -1,6 +1,6 @@
 <template>
-  <th scope="row" @dblclick="localState = !localState">
-    <div v-if="localState">
+  <th scope="row" @dblclick="localState = !localState" :id="insideId">
+    <div v-if="localState" :id="insideId">
       {{ localData }}
     </div>
     <input
@@ -9,6 +9,7 @@
       class="in-input"
       @change="onDataChange"
       type="text"
+      style="width: 5rem"
       autocomplete="off"
     />
   </th>
@@ -16,7 +17,7 @@
 
 <script>
 export default {
-  props: ["state", "data"],
+  props: ["state", "data", "insideId"],
   mounted() {
     this.localState = this.state;
     this.localData = this.data;
@@ -31,10 +32,14 @@ export default {
     state() {
       this.localState = this.state;
     },
+    data() {
+      this.localData = this.data;
+    },
   },
   methods: {
     onDataChange() {
-      this.$emit("change", this.localData);
+      this.localState = true;
+      this.$emit("change", { data: this.localData, id: this.insideId });
     },
   },
 };

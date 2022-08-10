@@ -4,6 +4,7 @@ import HomeLayout from "./views/HomeLayout";
 import Dashboard from "./views/Dashboard";
 import ShowAllStudent from './views/student/ShowAllStudent';
 import Mark from './views/add_marks/Mark';
+import FileMark2 from './views/add_marks/FileMark2';
 import Mark1 from './views/add_marks/Mark1';
 import Mark2 from './views/add_marks/Mark2';
 import AddCourse from './views/courses/AddCourse';
@@ -13,7 +14,7 @@ import MarksReport from './views/reports/templates/MarksReport';
 import StudentReport from './views/reports/templates/StudentReport';
 import GenerateDoctorAssignment from './views/reports/templates/GenerateDoctorAssignment';
 import GenerateSupervisorAssignment from './views/reports/templates/GenerateSupervisorAssignment';
-
+import ChartLayout from './views/charts/ChartLayout';
 export const routes = [{
         path: '/login',
         name: 'login',
@@ -41,8 +42,12 @@ export const routes = [{
             },
             {
                 name: 'add-mark',
-                path: '/dashboard/add.marks',
+                path: '/dashboard/file.add.marks1',
                 component: Mark
+            }, {
+                name: 'add-mark-2',
+                path: '/dashboard/file.add.marks2',
+                component: FileMark2
             },
             {
                 name: 'add-mark1',
@@ -92,6 +97,11 @@ export const routes = [{
                 path: '/dashboard/generate/supervisor-assignment/:object',
                 props: true,
                 component: GenerateSupervisorAssignment
+            },
+            {
+                name: "charts",
+                path: "/dashboard/charts",
+                component: ChartLayout
             }
 
         ],

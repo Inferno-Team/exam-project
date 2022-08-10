@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\student;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\InsertStudentMark1;
 use App\Models\Course;
 use App\Models\Student;
 use App\Models\StudentCourses;
@@ -59,7 +60,7 @@ class StudentController extends Controller
                 $query->where('name', 'like', '%' . $name . '%')
                     ->where('father_name', 'like', '%' . $father_name . '%')
                     ->where('last_name', 'like', '%' . $last_name . '%');
-            })->with('student','year')->get();
+            })->with('student', 'year')->get();
         return response()->json(['data' => $students], 200);
     }
 
@@ -198,6 +199,32 @@ class StudentController extends Controller
             ->where('year_id', $yearId)
             ->where('year_date', $thisYearDate)->with('student')->get();
 
+        return response()->json($students, 200);
+    }
+
+    public function saveStudentMark1(Request $request)
+    {
+        $this->dispatch(new InsertStudentMark1($request->students, $request->course_id));
+        return response()->json([
+            'code' => 200,
+            'msg' => 'تم حفظ العلامات بنجاح',
+        ], 200);
+    }
+    public function getStudentMark1($id)
+    {
+        // $students = StudentCourses::where('course_id', $id)
+        //     ->where('mark1', '!=', null)
+        //     ->whereIn('status', ["راسب", "اول مرة"])
+        //     ->with('student')->get();
+        $students = Student::orderBy("name")->whereHas(
+            'courses',
+            function ($query) use ($id) {
+                $query->where('course_id', $id)
+                    ->where('mark1', '!=', null)
+                    ->whereIn('status', ["راسب", "اول مرة"]);
+            }
+        )->with('courses')->get();
+        // info($students);
         return response()->json($students, 200);
     }
 }

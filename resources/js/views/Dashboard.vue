@@ -16,7 +16,7 @@ export default {
           header: false,
           title: "الصفحة الرئيسية",
           icon: "fa fa-bars",
-          href:"/dashboard/"
+          href: "/dashboard/",
         },
         {
           title: "عرض كافة الطلاب",
@@ -36,10 +36,16 @@ export default {
               title: "نظري",
               icon: "fa fa-minus",
               href: "/dashboard/add.marks2",
-            }, {
-              title: "من ملف",
+            },
+            {
+              title: "عملي من ملف",
               icon: "fa fa-minus",
-              href: "/dashboard/add.marks",
+              href: "/dashboard/file.add.marks1",
+            },
+            {
+              title: "نظري من ملف",
+              icon: "fa fa-minus",
+              href: "/dashboard/file.add.marks2",
             },
           ],
         },
@@ -58,6 +64,11 @@ export default {
           icon: "fa fa-clock-o",
           href: "/dashboard/dates",
         },
+        {
+          title:"مخططات",
+          icon:"fa fa-bar-chart",
+          href:"/dashboard/charts",
+        }
       ],
     };
   },

@@ -30,14 +30,18 @@ class CourseController extends Controller
         } else if ($current === 'second-tirm') {
             $semester = 'فصل ثاني';
         }
-        $courses = Course::where('section_id', $section_id)->whereHas(
-            'year_semester',
-            fn ($ys) => $ys->whereHas(
-                'year',
-                fn ($year) => $year->where('year_id', $year_id)->where('semester_name', "like", $semester)
-            )->with('year')
-        )->with('year_semester.year')->get();
-        info($courses);
+        if (isset($request->section_id) && isset($request->year_id))
+            $courses = Course::where('section_id', $section_id)->whereHas(
+                'year_semester',
+                fn ($ys) => $ys->whereHas(
+                    'year',
+                    fn ($year) => $year->where('year_id', $year_id)->where('semester_name', "like", $semester)
+                )->with('year')
+            )->with('year_semester.year')->get();
+        else {
+            $courses = Course::with('year_semester.year')->get();
+        }
+        // info($courses);
         // where('year_id', $year_id)->get();
         return response()->json([
             'courses' => $courses,
@@ -51,7 +55,7 @@ class CourseController extends Controller
         $courseName =  $request->name;
         $year_id = $request->year_id;
         $semester_id = $request->semester_id;
-        $type = $request->type;
+        $type = $request->type ? 'اختياري' : 'عادي';
         $section_id  = $request->section_id;
         $sy = YearSemester::find($semester_id);
 

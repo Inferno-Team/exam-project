@@ -31,6 +31,7 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
+        "chart.js": "^3.9.1",
         "font-awesome": "^4.7.0",
         "jspdf": "^2.5.1",
         "jspdf-html2canvas": "^1.4.9",

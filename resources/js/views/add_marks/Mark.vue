@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div class="floating-container" v-if="students.length > 0">
+      <div class="floating-button" @click.prevent="saveToDatabase">حفظ</div>
+    </div>
     <div class="tables">
       <table v-if="students.length > 0">
         <tr>
@@ -28,10 +31,16 @@
           <th scope="row">{{ student.result }}</th>
         </tr>
       </table>
+      <b-form-select
+        v-if="students.length === 0 && !selected"
+        :options="courses"
+        v-on:change="onChange"
+        v-model="course"
+      ></b-form-select>
       <vue-dropzone
-        v-else
         ref="myVueDropzone"
         id="dropzone"
+        v-if="students.length === 0 && selected"
         :options="dropzoneOptions"
         @vdropzone-file-added="vfileAdded"
       ></vue-dropzone>
@@ -51,6 +60,9 @@ export default {
   data() {
     return {
       students: [],
+      selected: false,
+      courses: [],
+      course: {},
       dropzoneOptions: {
         acceptedFiles:
           "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -61,6 +73,7 @@ export default {
         thumbnailWidth: 100,
         thumbnailHeight: 100,
         maxFiles: 1,
+
         thumbnailMethod: "contain",
       },
     };
@@ -94,8 +107,45 @@ export default {
       };
       reader.readAsArrayBuffer(file);
     },
+    saveToDatabase() {
+      axios
+        .post("/api/save_student_mark1", {
+          students: this.students,
+          course_id: this.course,
+        })
+        .then((res) => {
+          console.log(res);
+          let data = res.data;
+          let msg = data.msg;
+          alert(msg);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    onChange() {
+      this.selected = true;
+    },
+    loadCourses() {
+      axios
+        .post("/api/get_courses")
+        .then((res) => {
+          res.data.courses.forEach((course) => {
+            this.courses.push({
+              text: course.name,
+              value: course.id,
+            });
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
-  mounted() {},
+
+  mounted() {
+    this.loadCourses();
+  },
 };
 </script>
 
