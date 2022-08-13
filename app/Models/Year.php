@@ -20,5 +20,10 @@ class Year extends Model
     {
         return $this->hasMany(StudentYear::class, 'year_id');
     }
+
+    public function student()
+    {
+        return $this->belongsToMany(Student::class, 'student_years', 'year_id', 'student_id');
+    }
     
 }

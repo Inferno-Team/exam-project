@@ -32,6 +32,12 @@
         @response="onSelectDoctorResponse"
         @reset-values="reset4"
       />
+      <TopTenYearSelector
+        :is_shows="is_shows5"
+        style="position: absolute; right: 50%; top: 0%"
+        @response="onSelectYearResponse"
+        @reset-values="reset5"
+      />
     </div>
     <Notification :notification="notify" />
   </div>
@@ -43,6 +49,7 @@ import AddSelectableCourse from "../../compos/reportes/AddSelectableCourse.vue";
 import Notification from "../../compos/Notification.vue";
 import ExamAssignmentForDoctors from "../../compos/reportes/ExamAssignmentForDoctors.vue";
 import ExamAssignmentForSupervisor from "../../compos/reportes/ExamAssignmentForSupervisor.vue";
+import TopTenYearSelector from "../../compos/reportes/TopTenYearSelector.vue";
 
 export default {
   components: {
@@ -52,6 +59,7 @@ export default {
     Notification,
     ExamAssignmentForDoctors,
     ExamAssignmentForSupervisor,
+    TopTenYearSelector,
   },
   data() {
     return {
@@ -84,11 +92,16 @@ export default {
           title: "تقرير بأسماء الطلاب الناجحين",
           desc: "تقرير بأسماء الطلاب الناجحين",
         },
+        {
+          title: "تقرير العشر الاوائل",
+          desc: "تقرير بأسماء الطلاب العشر الاوائل",
+        },
       ],
       is_shows: false,
       is_shows2: false,
       is_shows3: false,
       is_shows4: false,
+      is_shows5: false,
       notify: {
         msg: "",
         code: -1,
@@ -113,6 +126,9 @@ export default {
             object: this.reportType[_index - 4],
           },
         });
+      else if (_index == 7) {
+        this.is_shows5 = !this.is_shows5;
+      }
     },
     generate({
       univ_id,
@@ -151,6 +167,10 @@ export default {
     reset4(value) {
       this.is_shows4 = value;
     },
+    reset5(value) {
+      this.is_shows5 = value;
+    },
+
     onSelectDoctorResponse(response) {},
     onSelectCourseResponse(response) {
       // response : {course? , code , msg}
@@ -165,6 +185,9 @@ export default {
         code: response.code,
         msg: msg,
       };
+    },
+    onSelectYearResponse() {
+      this.is_shows5 = false;
     },
   },
 };

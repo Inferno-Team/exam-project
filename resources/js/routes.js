@@ -14,6 +14,7 @@ import MarksReport from './views/reports/templates/MarksReport';
 import StudentReport from './views/reports/templates/StudentReport';
 import GenerateDoctorAssignment from './views/reports/templates/GenerateDoctorAssignment';
 import GenerateSupervisorAssignment from './views/reports/templates/GenerateSupervisorAssignment';
+import GenerateTopTen from './views/reports/templates/GenerateTopTen';
 import ChartLayout from './views/charts/ChartLayout';
 export const routes = [{
         path: '/login',
@@ -97,6 +98,11 @@ export const routes = [{
                 path: '/dashboard/generate/supervisor-assignment/:object',
                 props: true,
                 component: GenerateSupervisorAssignment
+            }, {
+                name: 'generate-top-ten',
+                path: '/dashboard/generate/top-ten/:id',
+                props: true,
+                component: GenerateTopTen
             },
             {
                 name: "charts",

@@ -8,10 +8,13 @@ use App\Models\Dates;
 use App\Models\Section;
 use App\Models\Student;
 use App\Models\StudentCourses;
+use App\Models\StudentStatus;
 use App\Models\StudentYear;
 use App\Models\Year;
 use App\Models\YearSemester;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CourseController extends Controller
 {
@@ -128,6 +131,73 @@ class CourseController extends Controller
             'code' => 200,
             'msg' => "تم اختيار مادة من " . $request->selection_name . " لهذا الطالب ",
             'course' => $studentCourses
+        ], 200);
+    }
+    public function getStudentStatus($id)
+    {
+        // $fieldStudentCount = 0;
+        // $successStudentCount = 0;
+        // $thisYear = Carbon::now()->year - 1;
+        // $students = StudentCourses::where('course_id', $id)
+        //     ->where('updated_at', ">=", Carbon::createFromDate($thisYear, 1, 1))
+        //     ->get()
+        //     ->map(function ($student) use (&$fieldStudentCount, &$successStudentCount) {
+        //         if ($student->status == 'اول مرة' || $student->status == 'راسب')
+        //             $fieldStudentCount++;
+        //         else $successStudentCount++;
+        //         return $student;
+        //     });
+        // info($thisYear);
+        // info($students);
+        // return response()->json([
+        //     'f' => $fieldStudentCount,
+        //     'p' => $successStudentCount
+        // ], 200);
+
+        // $maxMark = StudentCourses::where('course_id', $id)->sum(function($course){
+        //     $course->fullMark = $course->mark1 + $course->mark2;
+        //     return $course->mark1 + $course->mark2;
+        // })->max('fullMark')->get();
+        $thisYear = Carbon::now()->year - 1;
+        $maxMark = StudentCourses::where('course_id', $id)
+            ->where('updated_at', ">=", Carbon::createFromDate($thisYear, 1, 1))->get();
+        $maxMark = $maxMark->map(function ($course) {
+            $course->fullMark = $course->mark1 + $course->mark2;
+            return $course;
+        });
+        $max = $maxMark->max('fullMark');
+        $min = $maxMark->min('fullMark');
+        $avg = $maxMark->avg('fullMark');
+        $count = $maxMark->count();
+        return response()->json([
+            'max' => $max,
+            'min' => $min,
+            'avg' => $avg,
+            'count' => $count
+        ], 200);
+    }
+
+    public function getStudentStatusByYear($id)
+    {
+        $thisYear = Carbon::now()->year - 1;
+        $thisYear = ($thisYear - 1) . '/' . $thisYear;
+        $s = 0; // success
+        $p = 0; // passed
+        $f = 0; // field
+        $allStudent = StudentStatus::where('year_date', $thisYear)
+            ->where('year_id', $id)->get()->map(function ($student) use (&$s, &$p, &$f) {
+                if ($student->status == 'ناجح')
+                    $s++;
+                else if ($student->status == 'راسب')
+                    $f++;
+                else $p++;
+                return $student;
+            });
+        return response()->json([
+            'success' => $s,
+            'passed' => $p,
+            'field' => $f,
+
         ], 200);
     }
 }

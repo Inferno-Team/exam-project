@@ -227,4 +227,46 @@ class StudentController extends Controller
         // info($students);
         return response()->json($students, 200);
     }
+    public function getStudentsYearCount()
+    {
+        $students = Year::withCount('student')->get();
+        return response()->json($students, 200);
+    }
+
+    public function getStudentsTopTen($id)
+    {
+        $students = Student::whereHas(
+            'year',
+            function ($query) use ($id) {
+                $query->where('year_id', $id);
+            }
+        )->whereHas('status', function ($query) {
+            $query->where('status', 'ناجح')->where('year_date', date('Y') - 1 . '/' . (date('Y')));
+        })
+            ->with('courses')->get()
+            ->map(function ($student) {
+                $student->courses = $student->courses->filter(function ($course) {
+                    return $course->status == 'ناجح';
+                });
+                $student->fullMark = ($student->courses->sum('mark1') + $student->courses->sum('mark2')) /
+                    $student->courses->count();
+                return $student;
+            });
+        $students = $students->sortByDesc('fullMark')->take(10)->map(function ($student) {
+            return [
+                'name' => $student->name . ' ' . $student->last_name,
+                'fullMark' => $student->fullMark,
+                'univ_id' => $student->univ_id
+            ];
+        });
+        $returnedStudents = [];
+        foreach ($students as $i => $student) {
+            array_push($returnedStudents, [
+                'name' => $student['name'],
+                'fullMark' => $student['fullMark'],
+                'univ_id' => $student['univ_id'],
+            ]);
+        }
+        return response()->json($returnedStudents, 200);
+    }
 }

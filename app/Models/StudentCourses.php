@@ -20,4 +20,7 @@ class StudentCourses extends Model
     {
         return $this->belongsTo(Course::class, 'course_id');
     }
+    public function studentStatus(){
+        return $this->hasManyThrough(StudentStatus::class,Student::class,'student_id','student_id','student_id');
+    }
 }

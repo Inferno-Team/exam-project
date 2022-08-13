@@ -66,4 +66,8 @@ Route::group(["middleware" => ["auth:sanctum"]], function ($route) {
     $route->post('/save_student_mark1', [StudentController::class, 'saveStudentMark1']);
     $route->post('/save_student_mark2', [StudentController::class, 'saveStudentMark2']);
     $route->get('/get_student_mark1/{id}', [StudentController::class, 'getStudentMark1']);
+    $route->get('/get_students_year_count', [StudentController::class, 'getStudentsYearCount']);
+    Route::post('/get_student_status/{id}', [CourseController::class, 'getStudentStatus']);
+    Route::post('/get_students_status_by_year/{year_id}', [CourseController::class, 'getStudentStatusByYear']);
 });
+Route::post('/get_student_top_ten/{id}', [StudentController::class, 'getStudentsTopTen']);
