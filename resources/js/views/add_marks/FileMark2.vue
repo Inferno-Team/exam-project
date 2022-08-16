@@ -1,27 +1,31 @@
 <template>
-  <div>
+  <div style="overflow-y: auto">
     <div class="floating-container" v-if="students.length > 0">
       <div class="floating-button" @click.prevent="saveToDatabase">طباعة</div>
     </div>
     <div class="tables" id="printable">
-      <div v-if="selected">
+      <div v-if="selected" class="mx-5 px-5">
         <p>
           الجمهوية العربية السورية <br />
           جامعة حلب <br />
           كلية هندسة المعلوماتية
         </p>
-        <p>جدول العلامات ونسب النجاح في مقرر</p>
-        <p>{{ course.name }}</p>
-        <p>مستجدون</p>
-        <p>عدد المتقدمين {{ students.length }}</p>
-        <div v-if="!editState">
-          <p>نسبة النجاح</p>
-          <p>الكلي : {{ passedAllMark }}%</p>
-          <p>النظري : {{ passedMark2 }}%</p>
+        <p class="centered">جدول العلامات ونسب النجاح في مقرر</p>
+        <p class="centered">{{ course.name }}</p>
+        <p class="centered">مستجدون</p>
+        <p class="centered">عدد المتقدمين {{ students.length }}</p>
+        <div
+          v-if="!editState"
+          style="width: 9rem; text-align: end"
+          class="me-auto"
+        >
+          <p style="display: block">الكلي : {{ passedAllMark }}%</p>
+          <p style="display: block; text-align: start">نسبة النجاح</p>
+          <p style="display: block">النظري : {{ passedMark2 }}%</p>
         </div>
       </div>
 
-      <table v-if="students.length > 0">
+      <table v-if="students.length > 0" class="mx-auto my-4">
         <tr>
           <td>ت</td>
           <td>الرقم الجامعي</td>
@@ -48,9 +52,40 @@
           <th scope="row">{{ student.result }}</th>
         </tr>
       </table>
+      <div v-if="students.length > 0" class="mx-auto in-the-end">
+        <div style="max-width: fit-content">
+          <p>أعضاء لجنة الرصد</p>
+          <div class="empty-space"></div>
+        </div>
+        <div style="max-width: fit-content">
+          <p>المسجل</p>
+          <div class="empty-space"></div>
+        </div>
+        <div style="max-width: fit-content">
+          <p>المدقق</p>
+          <div class="empty-space"></div>
+        </div>
+        <div style="max-width: fit-content">
+          <p>رئيس اللجنة</p>
+          <div class="empty-space"></div>
+        </div>
+        <div style="max-width: fit-content;text-align: center;">
+          <p>رئيس شعبة الامتحانات</p>
+          <div class="empty-space">
+            <p>م.سمى صباغ</p>
+          </div>
+        </div>
+        <div style="max-width: fit-content;text-align: center;">
+          <p>عميد الكلية</p>
+          <div class="empty-space">
+            <p>أ.د.محمد الحميد</p>
+          </div>
+        </div>
+      </div>
       <b-form-select
         v-if="students.length === 0 && !selected"
         :options="courses"
+        class="mx-auto my-5"
         v-on:change="onChange"
         v-model="course"
       ></b-form-select>
@@ -125,7 +160,7 @@ export default {
       axios
         .post("/api/save_student_mark2", {
           students: this.students,
-          course_id: this.course,
+          course_id: this.course.id,
         })
         .then((res) => {
           console.log(res);
@@ -148,10 +183,10 @@ export default {
     onChange() {
       this.selected = true;
       axios
-        .get(`/api/get_student_mark1/${this.course}`)
+        .get(`/api/get_student_mark1/${this.course.id}`)
         .then((res) => {
           let data = res.data;
-          // console.log(data);
+          console.log(data);
           data.forEach(async (student) => {
             let mark = this.getStudentMark(student.courses);
             // console.log(mark);
@@ -171,7 +206,7 @@ export default {
     getStudentMark(courses) {
       for (let index = 0; index < courses.length; index++) {
         const course = courses[index];
-        if (course.course_id == this.course) {
+        if (course.course_id == this.course.id) {
           return course;
         }
       }
@@ -183,7 +218,7 @@ export default {
           res.data.courses.forEach((course) => {
             this.courses.push({
               text: course.name,
-              value: course.id,
+              value: course,
             });
           });
         })
@@ -256,10 +291,27 @@ table {
   /* display: inline-block; */
   border-collapse: collapse;
 }
-.tables {
+.name {
+  font-size: 19px;
+  color: black;
+}
+p {
+  font-size: 17px;
+  display: inline;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+.centered {
+  text-align: center;
+  font-size: 20px;
+  display: block;
+}
+.in-the-end {
+  justify-content: space-evenly;
   display: flex;
-  justify-content: center;
-  height: 99%;
-  overflow-y: auto;
+}
+.empty-space {
+  height: 100px;
+  padding: 2rem;
 }
 </style>

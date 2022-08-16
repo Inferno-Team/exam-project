@@ -68,8 +68,10 @@ class StudentController extends Controller
     public function searchUniv(Request $request)
     {
         $univ_id = $request->id;
-        $students = Student::where('univ_id', 'like', $univ_id . '%')
-            ->with('year.year')->get();
+        $students = StudentYear::orderBy('year_id')
+            ->whereHas('student', function ($query) use ($univ_id) {
+                $query->where('univ_id', 'like', $univ_id . '%');
+            })->with('student', 'year')->get();
         return response()->json(['data' => $students], 200);
     }
     public function getStudentById($id)

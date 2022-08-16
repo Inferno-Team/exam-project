@@ -76,6 +76,29 @@
           {{ this.object.graduationDate }}
         </h6>
       </div>
+      <div class="mx-auto in-the-end">
+        <div style="max-width: fit-content">
+          <p>المسجل</p>
+          <div class="empty-space"></div>
+        </div>
+        <div style="max-width: fit-content">
+          <p>المدقق</p>
+          <div class="empty-space"></div>
+        </div>
+
+        <div style="max-width: fit-content; text-align: center">
+          <p>رئيس شعبة الامتحانات</p>
+          <div class="empty-space">
+            <p>م.سمى صباغ</p>
+          </div>
+        </div>
+        <div style="max-width: fit-content; text-align: center">
+          <p>عميد الكلية</p>
+          <div class="empty-space">
+            <p>أ.د.محمد الحميد</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -210,5 +233,13 @@ p {
   text-decoration-line: underline;
   font-weight: 600;
   text-underline-offset: 0.125rem;
+}
+.in-the-end {
+  justify-content: space-evenly;
+  display: flex;
+}
+.empty-space {
+  height: 100px;
+  padding: 2rem;
 }
 </style>
