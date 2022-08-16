@@ -42,7 +42,7 @@
             autocomplete="off"
           />
         </th>
-        <th scope="row" :id="'s ' + i" @dblclick="onSigDoubleClick($event)">
+        <th scope="row" :id="'s ' + i">
           <div v-if="sigShows[i]" :id="'s ' + i">{{ table[i].sig }}</div>
           <input
             v-else

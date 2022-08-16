@@ -24,10 +24,23 @@
         <p>للعاد الدراسي</p>
         <p class="data">{{ date.date }}</p>
       </div>
-      <div style="margin-top: 1rem; margin-left: 4rem; margin-right: 4rem">
-        <p style="font-size: 23px; text-decoration: underline">المراقب :</p>
-        <p class="data">{{ supervisor.name }}</p>
+      <div
+        style="
+          margin-top: 1rem;
+          margin-left: 4rem;
+          margin-right: 4rem;
+          display: flex;
+          align-items: baseline;
+        "
+      >
+        <p style="font-size: 23px; text-decoration: underline" class="mx-2">
+          المراقب :
+        </p>
+        <p class="data mx-2" style="font-size: 1.325rem">
+          {{ supervisor.name }}
+        </p>
         <editable-row-item
+          class="mx-2"
           :data="supervisorState"
           @update="updateSupervisor"
           :insideId="1"
@@ -78,7 +91,7 @@ export default {
       toPrint: true,
       supervisor: null,
       isChangable: true,
-      supervisorState: "",
+      supervisorState: "نوع المراقب",
     };
   },
   methods: {
@@ -135,7 +148,7 @@ export default {
     },
     updateSupervisor({ data, id }) {
       this.supervisorState = data;
-      this.isChangable = false;
+      // this.isChangable = !this.isChangable;
     },
   },
 };
@@ -157,5 +170,8 @@ p {
 }
 .add:hover {
   color: #00bcd4;
+}
+th {
+  display: inline-block;
 }
 </style>

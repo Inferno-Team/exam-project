@@ -202,6 +202,7 @@ export default {
 }
 .grid_view {
   display: grid;
+  gap: 10px;
   grid-template-columns: repeat(2, minmax(92px, 1fr));
   grid-template-rows: repeat(3, minmax(92px, 1fr));
 }
