@@ -56,5 +56,6 @@ class InsertCourseStudentJob implements ShouldQueue
             }
             // $studentsCount += count($sy);
         }
+        info("تمت اضافة هذه المادة لعدد من الطلاب : $studentsCount");
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\student;
 
 use App\Http\Controllers\Controller;
 use App\Jobs\InsertStudentMark1;
+use App\Jobs\InsertStudentMark2;
 use App\Models\Course;
 use App\Models\Student;
 use App\Models\StudentCourses;
@@ -210,6 +211,15 @@ class StudentController extends Controller
             'msg' => 'تم حفظ العلامات بنجاح',
         ], 200);
     }
+      public function saveStudentMark2(Request $request)
+    {
+        $this->dispatch(new InsertStudentMark2($request->students, $request->course_id));
+        return response()->json([
+            'code' => 200,
+            'msg' => 'تم حفظ العلامات بنجاح',
+        ], 200);
+    }
+    
     public function getStudentMark1($id)
     {
         // $students = StudentCourses::where('course_id', $id)

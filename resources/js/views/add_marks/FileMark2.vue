@@ -3,7 +3,24 @@
     <div class="floating-container" v-if="students.length > 0">
       <div class="floating-button" @click.prevent="saveToDatabase">طباعة</div>
     </div>
-    <div class="tables">
+    <div class="tables" id="printable">
+      <div v-if="selected">
+        <p>
+          الجمهوية العربية السورية <br />
+          جامعة حلب <br />
+          كلية هندسة المعلوماتية
+        </p>
+        <p>جدول العلامات ونسب النجاح في مقرر</p>
+        <p>{{ course.name }}</p>
+        <p>مستجدون</p>
+        <p>عدد المتقدمين {{ students.length }}</p>
+        <div v-if="!editState">
+          <p>نسبة النجاح</p>
+          <p>الكلي : {{ passedAllMark }}%</p>
+          <p>النظري : {{ passedMark2 }}%</p>
+        </div>
+      </div>
+
       <table v-if="students.length > 0">
         <tr>
           <td>ت</td>
@@ -46,7 +63,7 @@ import vue2Dropzone from "vue2-dropzone";
 import "vue2-dropzone/dist/vue2Dropzone.min.css";
 import * as XLSX from "xlsx";
 import { toArabicWord } from "number-to-arabic-words/index.js";
-
+import html2PDF from "jspdf-html2canvas";
 import EditableRowItem from "../../compos/reportes/generate/EditableRowItem.vue";
 export default {
   components: { vueDropzone: vue2Dropzone, EditableRowItem },
@@ -56,6 +73,10 @@ export default {
       selected: false,
       courses: [],
       course: {},
+      allStudentsEditCount: 0,
+      passedMark2: 0,
+      passedAllMark: 0,
+      editState: true,
       dropzoneOptions: {
         acceptedFiles:
           "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -102,7 +123,7 @@ export default {
     },
     saveToDatabase() {
       axios
-        .post("/api/save_student_mark1", {
+        .post("/api/save_student_mark2", {
           students: this.students,
           course_id: this.course,
         })
@@ -115,6 +136,14 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+      let printable = document.getElementById("printable");
+      html2PDF(printable, {
+        jsPDF: {
+          format: "a4",
+        },
+        imageType: "image/jpeg",
+        output: `علامات_النظري_لمادة_${this.course.name}.pdf`,
+      });
     },
     onChange() {
       this.selected = true;
@@ -166,7 +195,7 @@ export default {
       let mark1 = parseInt(this.students[id].mark1);
       let mark2 = parseInt(data);
       if (mark2 > 70) {
-        this.students[id].mark2 = '';
+        this.students[id].mark2 = "";
         var lastIndex = this.students.length - 1;
         this.students.push(this.students[lastIndex]);
         this.students.splice(lastIndex, 1);
@@ -182,6 +211,25 @@ export default {
       var lastIndex = this.students.length - 1;
       this.students.push(this.students[lastIndex]);
       this.students.splice(lastIndex, 1);
+      this.allStudentsEditCount++;
+      if (this.allStudentsEditCount >= this.students.length) {
+        this.calculateParse();
+      }
+    },
+    calculateParse() {
+      this.editState = false;
+      let sumMark2 = 0,
+        sumFullMark = 0;
+      this.students.forEach((student) => {
+        if (student.fullMark >= 60) sumFullMark++;
+        if (student.mark2 >= 42) sumMark2++;
+      });
+      console.log(sumMark2);
+      console.log(sumFullMark);
+      this.passedMark2 = ((sumMark2 * 100) / this.students.length).toFixed(2);
+      this.passedAllMark = ((sumFullMark * 100) / this.students.length).toFixed(
+        2
+      );
     },
   },
 

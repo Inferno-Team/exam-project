@@ -35,10 +35,12 @@ class InsertStudentMark1 implements ShouldQueue
     public function handle()
     {
         $count = 0;
+        info($this->students);
         $studentCourse = StudentCourses::where('course_id', $this->course_id)->with('student')->get();
+        
         foreach ($studentCourse as $sc) {
             foreach ($this->students as $student) {
-                if ($sc->student->univ_id === $student['univ_id']) {
+                if ($sc->student->univ_id == $student['univ_id']) {
                     $sc->mark1 = $student['fullMark'];
                     $sc->save();
                     $count++;
