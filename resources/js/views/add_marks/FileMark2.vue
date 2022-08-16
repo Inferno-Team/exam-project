@@ -194,12 +194,12 @@ export default {
     onMark2Changed({ data, id }) {
       let mark1 = parseInt(this.students[id].mark1);
       let mark2 = parseInt(data);
-      if (mark2 > 70) {
+      if (mark1 + mark2 > 100) {
         this.students[id].mark2 = "";
         var lastIndex = this.students.length - 1;
         this.students.push(this.students[lastIndex]);
         this.students.splice(lastIndex, 1);
-        alert("علامة النظري لا يمكن ان تكون اكبر من 70");
+        alert("علامة الكلية لا يمكن ان تكون اكبر من 100");
         return;
       }
       this.students[id].mark2 = mark2;

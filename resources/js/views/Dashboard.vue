@@ -28,16 +28,6 @@ export default {
           icon: "fa fa-user",
           child: [
             {
-              title: "عملي",
-              icon: "fa fa-pencil-square-o",
-              href: "/dashboard/add.marks1",
-            },
-            {
-              title: "نظري",
-              icon: "fa fa-minus",
-              href: "/dashboard/add.marks2",
-            },
-            {
               title: "عملي من ملف",
               icon: "fa fa-minus",
               href: "/dashboard/file.add.marks1",
@@ -65,10 +55,10 @@ export default {
           href: "/dashboard/dates",
         },
         {
-          title:"مخططات",
-          icon:"fa fa-bar-chart",
-          href:"/dashboard/charts",
-        }
+          title: "مخططات",
+          icon: "fa fa-bar-chart",
+          href: "/dashboard/charts",
+        },
       ],
     };
   },

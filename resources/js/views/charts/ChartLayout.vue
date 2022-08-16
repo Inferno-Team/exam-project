@@ -106,7 +106,7 @@ export default {
               datasets: [
                 {
                   label: "علامة الطالب",
-                  data: [result.data.max, result.data.avg, result.data.min],
+                  data: [result.data.min, result.data.avg, result.data.max],
                   backgroundColor: [
                     "rgba(75, 192, 192, 0.5)",
                     "rgba(54, 162, 235, 0.5)",
@@ -128,7 +128,7 @@ export default {
             chartStatus.destroy();
           }
           const ctx2 = document.getElementById("myChart2").getContext("2d");
-          var chart = new Chart(ctx2, chartObject);
+          new Chart(ctx2, chartObject);
           // chart.destroy();
           // var chart = new Chart(ctx2, chartObject);
         })

@@ -184,7 +184,7 @@ class CourseController extends Controller
         $s = 0; // success
         $p = 0; // passed
         $f = 0; // field
-        $allStudent = StudentStatus::where('year_date', $thisYear)
+        StudentStatus::where('year_date', $thisYear)
             ->where('year_id', $id)->get()->map(function ($student) use (&$s, &$p, &$f) {
                 if ($student->status == 'ناجح')
                     $s++;
