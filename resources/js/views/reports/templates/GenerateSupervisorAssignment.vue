@@ -27,6 +27,12 @@
       <div style="margin-top: 1rem; margin-left: 4rem; margin-right: 4rem">
         <p style="font-size: 23px; text-decoration: underline">المراقب :</p>
         <p class="data">{{ supervisor.name }}</p>
+        <editable-row-item
+          :data="supervisorState"
+          @update="updateSupervisor"
+          :insideId="1"
+          :state="isChangable"
+        />
       </div>
       <div>
         <div
@@ -57,8 +63,9 @@
 <script>
 import html2PDF from "jspdf-html2canvas";
 import SupervisorTable from "../../../compos/reportes/generate/SupervisorTable.vue";
+import EditableRowItem from "../../../compos/reportes/generate/EditableRowItem.vue";
 export default {
-  components: { SupervisorTable },
+  components: { SupervisorTable, EditableRowItem },
   props: ["object"],
   mounted() {
     this.getSupervisor();
@@ -70,6 +77,8 @@ export default {
       size: 3,
       toPrint: true,
       supervisor: null,
+      isChangable: true,
+      supervisorState: "",
     };
   },
   methods: {
@@ -123,6 +132,10 @@ export default {
     },
     addRow() {
       this.size++;
+    },
+    updateSupervisor({ data, id }) {
+      this.supervisorState = data;
+      this.isChangable = false;
     },
   },
 };

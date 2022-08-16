@@ -16,7 +16,7 @@ class InsertStudentStatusDumyData extends Migration
      */
     public function up()
     {
-        $students = Student::get();
+       /*  $students = Student::get();
 
         for ($i = 0; $i < count($students); $i++) {
             $yearId = rand(1, 5);
@@ -42,7 +42,7 @@ class InsertStudentStatusDumyData extends Migration
                 ]);
                 $date++;
             }
-        }
+        } */
     }
 
     /**
